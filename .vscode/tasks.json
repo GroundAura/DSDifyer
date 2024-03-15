@@ -26,10 +26,23 @@
             "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
         },
         {
+            "label": "xTranslator-to-DSD.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": [".vscode\\scripts\\xTranslator-to-DSD.py"]
+        },
+        {
             "label": "zip.bat",
             "type": "shell",
             "command": ".vscode\\scripts\\zip.bat",
             "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+        },
+        {
+            "label": "Compile DSD",
+            "group": "build",
+            "dependsOn": [
+                "xTranslator-to-DSD.py"
+            ]
         },
         {
             "label": "Zip to build",
