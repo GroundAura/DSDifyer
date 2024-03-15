@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+<PapyrusProject xmlns="PapyrusProject.xsd"
+	Flags="TESV_Papyrus_Flags.flg"
+	Game="sse"
+	Output="..\..\build\papyrus\release"
+	Optimize="true"
+	Release="true"
+	Anonymize="true"
+	Final="true">
+	<Imports>
+		<!--
+			Skyrim_Install_Dir/Data/Scripts/Source
+			Ensure you have installed the Skyrim SE Creation Kit and opened it at least once to allow it to extract the scripts
+			e.g. C:\Games\Steam\Skyrim Special Edition\Data\Source\Scripts
+		-->
+		<!-- <Import>C:\Program Files (x86)\Steam\steamapps\common\Skyrim Special Edition\Data\Source\Scripts</Import> -->
+		<Import>{PathCKSource}</Import>
+
+		<!--
+			SKSE_Install_Dir/Data/Scripts/Source
+			If installing SKSE directly in your Skyrim root folder, then SKSE_Install_Dir will be the same as Skyrim_Install_dir
+			e.g. C:\Games\Steam\Skyrim Special Edition\Data\Source\Scripts
+		-->
+		<!-- <Import>C:\Program Files (x86)\Steam\steamapps\common\Skyrim Special Edition\Data\Source\Scripts</Import> -->
+		<Import>{PathSKSESource}</Import>
+
+		<!--
+			Mod_Install_Dir/Scripts/Source
+			Additional relevant mods
+			e.g. C:\Games\Elder Scrolls\V - Skyrim\SMEFT\mods\ModName\Source\Scripts
+		-->
+		<Import>{PathMCMHelperSource}</Import>
+		<!-- <Import>{PathMO2Mods}\ModName1\Source\Scripts</Import> -->
+		<!-- <Import>{PathMO2Mods}\ModName2\Source\Scripts</Import> -->
+		<!-- <Import>{PathMO2Mods}\ModName3\Source\Scripts</Import> -->
+		</Imports>
+	<Folders>
+		<Folder>..\..\dist\{FolderName}\Source\scripts\</Folder>
+	</Folders>
+</PapyrusProject>
