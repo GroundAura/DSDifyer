@@ -1,1 +1,1 @@
-![Footer](https://raw.githubusercontent.com/{GitHubAccount}/{RepositoryName}/main/docs/images/brand/Header.png)
+![Footer](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/brand/Header.png)

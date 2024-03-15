@@ -1,1 +1,0 @@
-ScriptName {PluginNameShort}_MCM Extends MCM_ConfigBase

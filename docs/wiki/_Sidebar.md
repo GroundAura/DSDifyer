@@ -1,1 +1,1 @@
-# [{TitleName}](https://github.com/{GitHubAccount}/{RepositoryName}/wiki)
+# [More Immersive Text](https://github.com/GroundAura/More-Immersive-Text/wiki)

@@ -1,7 +1,7 @@
-# {TitleName}
+# More Immersive Text
 
 ---
 
-Welcome to the {TitleName} wiki!
+Welcome to the More Immersive Text wiki!
 
-{TitleName} is a mod for Skyrim Special Edition.
+More Immersive Text is a mod for Skyrim Special Edition.

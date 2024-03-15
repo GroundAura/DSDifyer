@@ -1,3 +1,3 @@
-del "build\{ZipName}.zip"
-cd "dist\{FolderName}"
-"{Path7Zip}\7z" a -tzip "..\..\build\{ZipName}.zip"
+del "build\More Immersive Text.zip"
+cd "dist\More Immersive Text"
+"C:\Program Files\7-Zip\7z" a -tzip "..\..\build\More Immersive Text.zip"

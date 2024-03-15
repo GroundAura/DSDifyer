@@ -1,1 +1,1 @@
-copy "docs\images\brand\Main.png" "dist\{FolderName}\fomod\images"
+copy "docs\images\brand\Main.png" "dist\More Immersive Text\fomod\images"

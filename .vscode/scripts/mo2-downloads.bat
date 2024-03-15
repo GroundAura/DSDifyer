@@ -1,2 +1,2 @@
-copy "build\{ZipName}.zip" "{PathMO2Downloads}"
-copy "build\MO2\{ZipName}.zip.meta" "{PathMO2Downloads}"
+copy "build\More Immersive Text.zip" "D:\Games\Skyrim\MO2\downloads"
+copy "build\MO2\More Immersive Text.zip.meta" "D:\Games\Skyrim\MO2\downloads"

@@ -1,4 +1,4 @@
-# {TitleName} - Changelog
+# More Immersive Text - Changelog
 
 ## Version 1.0.0
 
