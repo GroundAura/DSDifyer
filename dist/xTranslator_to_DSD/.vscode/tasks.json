@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "xTranslator-to-DSD.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": ["xTranslator-to-DSD.py"]
+        },
+        {
+            "label": "xTranslator to DSD",
+            "group": "build",
+            "dependsOn": [
+                "xTranslator-to-DSD.py"
+            ]
+        }
+    ]
+}

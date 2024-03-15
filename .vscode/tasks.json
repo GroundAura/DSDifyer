@@ -38,6 +38,12 @@
             "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
         },
         {
+            "label": "zip2.bat",
+            "type": "shell",
+            "command": ".vscode\\scripts\\zip2.bat",
+            "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+        },
+        {
             "label": "Compile DSD",
             "group": "build",
             "dependsOn": [
@@ -80,6 +86,13 @@
             "group": "build",
             "dependsOn": [
                 "md2nexus.bat"
+            ]
+        },
+        {
+            "label": "Zip script to build",
+            "group": "build",
+            "dependsOn": [
+                "zip2.bat"
             ]
         }
     ]
