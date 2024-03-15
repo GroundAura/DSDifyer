@@ -38,12 +38,26 @@ def xTranslator_to_DSD(xml_file, replace_original_string, replace_new_string):
 					if string_element.tag == "Source":
 						if replace_original_string:
 							original_string = string_element.text
+							original_string = original_string.replace("\\\\", "\\\\\\\\")
+							original_string = original_string.replace("\"", "\\" + "\"")
+							original_string = original_string.replace("\b", "\\" + "b")
+							original_string = original_string.replace("\f", "\\" + "f")
+							original_string = original_string.replace("\n", "\\" + "n")
+							original_string = original_string.replace("\r", "\\" + "r")
+							original_string = original_string.replace("\t", "\\" + "t")
 							combined_content = combined_content.replace("[original_string]", original_string)
 						else:
 							combined_content = combined_content.replace("[original_string]", "")
 					if string_element.tag == "Dest":
 						if replace_new_string:
 							new_string = string_element.text
+							new_string = new_string.replace("\\\\", "\\\\\\\\")
+							new_string = new_string.replace("\"", "\\" + "\"")
+							new_string = new_string.replace("\b", "\\" + "b")
+							new_string = new_string.replace("\f", "\\" + "f")
+							new_string = new_string.replace("\n", "\\" + "n")
+							new_string = new_string.replace("\r", "\\" + "r")
+							new_string = new_string.replace("\t", "\\" + "t")
 							combined_content = combined_content.replace("[new_string]", new_string)
 						else:
 							combined_content = combined_content.replace("[new_string]", "")

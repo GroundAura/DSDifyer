@@ -29,6 +29,7 @@ build/release/
 *temp.*
 *test*.*
 ExampleScript.pex
+!*Contest*.*
 
 # Dependencies #
 
