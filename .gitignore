@@ -27,11 +27,8 @@ build/release/
 *PluginName*MCM.pex
 *snippets.*
 *temp.*
+*test*.*
 ExampleScript.pex
-test*.bat
-test*.ini
-test*.json
-test*.py
 
 # Dependencies #
 
