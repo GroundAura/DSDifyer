@@ -1,38 +1,19 @@
-import xml.etree.ElementTree as ET
-# import json
+import configparser
 import os
+import xml.etree.ElementTree as ET
 
-ROOT_PATH = os.getcwd()
+def read_config(file_path, case_sensitive):
+	config = configparser.ConfigParser(comment_prefixes=(";", "#", "//"), inline_comment_prefixes=(";", "#", "//"))
+	if case_sensitive:
+		config.optionxform = lambda option: option
+	config.read(file_path)
+	return config
 
-# def xml_to_dict(xml_element):
-# 	xml_dict = {}
-# 	if xml_element.attrib:
-# 		xml_dict["@attributes"] = xml_element.attrib
-# 	if xml_element.text:
-# 		xml_dict["text"] = xml_element.text.strip()
-# 	for child in xml_element:
-# 		if child.tag in xml_dict:
-# 			if not isinstance(xml_dict[child.tag], list):
-# 				xml_dict[child.tag] = [xml_dict[child.tag]]
-# 			xml_dict[child.tag].append(xml_to_dict(child))
-# 		else:
-# 			xml_dict[child.tag] = xml_to_dict(child)
-# 	return xml_dict
-
-# def xml_to_json(xml_file):
-# 	tree = ET.parse(xml_file)
-# 	root = tree.getroot()
-# 	# test = {root.tag: xml_to_dict(root)}
-# 	# print(test)
-# 	return json.dumps({root.tag: xml_to_dict(root)}, indent=2, separators=(',', ': '))
-
-def xml_to_json(xml_file, template_file):
+def xTranslator_to_DSD(xml_file, replace_original_string, replace_new_string):
 	tree = ET.parse(xml_file)
 	root = tree.getroot()
 	combined_content = "[\n"
-	with open(template_file, 'r') as f:
-		template = f.read()
-	# template = "\t{\n\t\t\"editor_id\": \"[EditorID]\",\n\t\t\"type\": \"[Record type]\",\n\t\t\"original\": \"[original string]\",\n\t\t\"string\": \"[replacement/translation string]\"\n\t}"
+	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 	for element in root:
 		# print(f'<{element.tag} {element.attrib}></{element.tag}>')
 		# if element.tag == "Params":
@@ -49,55 +30,67 @@ def xml_to_json(xml_file, template_file):
 					# print(f'  <{string_element.tag} {string_element.attrib}>{string_element.text}</{string_element.tag}>')
 					if string_element.tag == "EDID":
 						editor_id = string_element.text
-						combined_content = combined_content.replace("[EditorID]", editor_id)
+						combined_content = combined_content.replace("[editor_id]", editor_id)
 					if string_element.tag == "REC":
 						record_type = string_element.text
 						record_type = record_type.replace(":", " ")
-						combined_content = combined_content.replace("[Record type]", record_type)
+						combined_content = combined_content.replace("[record_type]", record_type)
 					if string_element.tag == "Source":
-						original_string = string_element.text
-						combined_content = combined_content.replace("[original string]", original_string)
+						if replace_original_string:
+							original_string = string_element.text
+							combined_content = combined_content.replace("[original_string]", original_string)
+						else:
+							combined_content = combined_content.replace("[original_string]", "")
 					if string_element.tag == "Dest":
-						new_string = string_element.text
-						combined_content = combined_content.replace("[replacement/translation string]", new_string)
+						if replace_new_string:
+							new_string = string_element.text
+							combined_content = combined_content.replace("[new_string]", new_string)
+						else:
+							combined_content = combined_content.replace("[new_string]", "")
 				# print(f' </{string.tag}>')
-	combined_content = combined_content.replace("\t}\n\t{", "\t},\n\t{")
 	combined_content += "]"
+	combined_content = combined_content.replace("\t},\n]", "\t}\n]")
 	# print (combined_content)
 	return combined_content
 
-# def fix_formatting(text):
-	# text = text.replace("  ", "\t")
-	# text = text.replace("\t}\n\t{", "\t},\n\t{")
-	# text = text.replace("\t", "  ")
-	# text = text.replace("  }\n  {", "  },\n  {")
-	# text = text.replace("ACTI:RNAM", "ACTI RNAM")
-	# text = text.replace("FLOR:RNAM", "FLOR RNAM")
-	# text = text.replace("REFR:FULL", "REFR FULL")
-	# text = text.replace("REGN:RDMP", "REGN RDMP")
-	# text = text.replace("DIAL:FULL", "DIAL FULL")
-	# text = text.replace("INFO:RNAM", "INFO RNAM")
-	# text = text.replace("QUST:CNAM", "QUST CNAM")
-	# text = text.replace("QUST:NNAM", "QUST NNAM")
-	# text = text.replace("INFO:NAM1", "INFO NAM1")
-	# text = text.replace("MESG:ITXT", "MESG ITXT")
-	# text = text.replace("MESG:DESC", "MESG DESC")
-	# text = text.replace("", "")
-	# return text
-
 def main():
-	source_file = os.path.join(ROOT_PATH, "src\\strings\\xml\\_test.xml")
-	template_string = os.path.join(ROOT_PATH, "src\\strings\\templates\\template-string.json")
-	output_file = os.path.join(ROOT_PATH, "src\\strings\\_test.json")
+	ROOT_PATH = os.getcwd()
 
-	output = xml_to_json(source_file, template_string)
-	# output = fix_formatting(output)
+	CONFIG_PATH = os.path.join(ROOT_PATH, "xTranslator_to_DSD.ini")
 
+	print(f"Info: trying to read config file from: '{CONFIG_PATH}'")
+	config = read_config(CONFIG_PATH, False)
+	if not config:
+		print("Error: config not found or failed to read")
+		return
+	print("Info: config found")
 
-	with open(output_file, 'w') as f:
-		f.write(output)
+	source_path = os.path.join(ROOT_PATH, config.get('PATHS', 'SOURCE_FOLDER'))
+	output_path = os.path.join(ROOT_PATH, config.get('PATHS', 'OUTPUT_FOLDER'))
 
-	print(output)
+	if config.get('GENERAL', 'Forward_Original_String') == "false":
+		replace_original_string = False
+	else:
+		replace_original_string = True
+
+	if config.get('GENERAL', 'Forward_Replacement_String') == "false":
+		replace_new_string = False
+	else:
+		replace_new_string = True
+
+	for _, _, files in os.walk(source_path):
+		for file in files:
+			if file.endswith('.xml'):
+				xml_file = os.path.join(ROOT_PATH, source_path, file)
+				output = xTranslator_to_DSD(xml_file, replace_original_string, replace_new_string)
+				# print(file)
+				# output_file_name = file.removesuffix(".xml") + ".json"
+				# print(output_file_name)
+				output_file = os.path.join(ROOT_PATH, output_path, file.removesuffix(".xml") + ".json")
+				with open(output_file, 'w') as f:
+					f.write(output)
+					print(f"Info: translated '{xml_file}' to '{output_file}'")
+				# print(output)
 
 if __name__ == "__main__":
 	main()
