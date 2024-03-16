@@ -79,15 +79,21 @@ def main():
 		return
 	print("Info: config found")
 
-	source_path = os.path.join(ROOT_PATH, config.get('PATHS', 'SOURCE_FOLDER'))
-	output_path = os.path.join(ROOT_PATH, config.get('PATHS', 'OUTPUT_FOLDER'))
+	root_var = "[ROOT]"
+	source_path = config.get('GENERATE_DSD', 'SOURCE_FOLDER')
+	source_path = source_path.replace(root_var, ROOT_PATH)
+	# print(source_path)
+	
+	output_path = config.get('GENERATE_DSD', 'OUTPUT_FOLDER')
+	output_path = output_path.replace(root_var, ROOT_PATH)
+	# print(output_path)
 
-	if config.get('GENERAL', 'Forward_Original_String') == "false":
+	if config.get('GENERATE_DSD', 'Forward_Original_String') == "false":
 		replace_original_string = False
 	else:
 		replace_original_string = True
 
-	if config.get('GENERAL', 'Forward_Replacement_String') == "false":
+	if config.get('GENERATE_DSD', 'Forward_Replacement_String') == "false":
 		replace_new_string = False
 	else:
 		replace_new_string = True
