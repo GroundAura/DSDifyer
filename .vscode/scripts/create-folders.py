@@ -10,14 +10,22 @@ def read_config(file_path, case_sensitive):
 	return config
 
 def generate_folders_from_plugins(source_path, output_path):
-	for _, _, files in os.walk(source_path):
-		for file in files:
-			if file.endswith('.esp') or file.endswith('.esl') or file.endswith('.esm'):
-				# folder_path = os.path.join(output_path, file)
-				# os.makedirs(folder_path)
-				folder_path = Path(os.path.join(output_path, file))
-				folder_path.mkdir(parents=True, exist_ok=True)
-				print(f"Info: creating directory: '{folder_path}\\'")
+	if source_path.endswith('plugins.txt'):
+		with open(source_path, 'r') as f:
+			contents = f.read()
+			for line in contents.splitlines():
+				if line.startswith("*"):
+					file = line.removeprefix("*")
+					folder_path = Path(os.path.join(output_path, file))
+					folder_path.mkdir(parents=True, exist_ok=True)
+					print(f"Info: creating directory: '{folder_path}\\'")
+	else:
+		for _, _, files in os.walk(source_path):
+			for file in files:
+				if file.endswith('.esp') or file.endswith('.esl') or file.endswith('.esm'):
+					folder_path = Path(os.path.join(output_path, file))
+					folder_path.mkdir(parents=True, exist_ok=True)
+					print(f"Info: creating directory: '{folder_path}\\'")
 
 def main():
 	ROOT_PATH = os.getcwd()
