@@ -13,24 +13,15 @@ end;
 function Process(e: IInterface): integer;
 var
     i: integer;
-    sSignature, s: string;
+    s, sSignature: string;
     m, menuButtons, menuButton, menuButtons2, menuButton2, subRecord: IInterface;
 begin
     // skip item if the selection is the master
     m := Master(e);
     if not Assigned(m) then Exit;
 
-    sSignature := Signature(e);
     s := '';
 
-    // the current plugin the processing record exists in
-    slData.Add('Current Plugin: ' + GetFileName(e));
-
-    // the master of the current record
-    slData.Add('Master Plugin: ' + GetFileName(MasterOrSelf(e)));
-    slData.Add('EditorID: ' + EditorID(MasterOrSelf(e)));
-    slData.Add('Record Type: ' + sSignature);
-    
     // add additional elements here
     if sSignature = 'MESG' then begin
         AddDataByPath(e, m, s, 'DESC');
@@ -66,15 +57,22 @@ end;
 procedure AddDataByPath(e, m: IInterface; s, path: string);
 begin
     if not ElementExists(e, path) then Exit;
+
+    slData.Add('Current Plugin: ' + GetFileName(e));
+    slData.Add('Master Plugin: ' + GetFileName(MasterOrSelf(e)));
+    slData.Add('EditorID: ' + EditorID(MasterOrSelf(e)));
+    slData.Add('Record Type: ' + Signature(e));
     slData.Add('Data Type: ' + path);
     s := GetElementEditValues(m, path);
     s := StringReplace(s, #13#10, '\n', [rfReplaceAll]);
-    s := StringReplace(s, #9, '\t', [rfReplaceAll]);
+    // s := StringReplace(s, #9, '\t', [rfReplaceAll]);
     slData.Add('Master Value: ' + s);
     s := GetElementEditValues(e, path);
     s := StringReplace(s, #13#10, '\n', [rfReplaceAll]);
-    s := StringReplace(s, #9, '\t', [rfReplaceAll]);
+    // s := StringReplace(s, #9, '\t', [rfReplaceAll]);
     slData.Add('Current Value: ' + s);
+
+    slData.Add('');
 end;
 
 function Finalize: integer;
