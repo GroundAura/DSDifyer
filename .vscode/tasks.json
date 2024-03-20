@@ -32,6 +32,12 @@
             "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
         },
         {
+            "label": "xEdit-to-DSD.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": [".vscode\\scripts\\xEdit-to-DSD.py"]
+        },
+        {
             "label": "xTranslator-to-DSD.py",
             "type": "shell",
             "command": "${command:python.interpreterPath}",
@@ -50,10 +56,24 @@
             "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
         },
         {
-            "label": "Compile DSD",
+            "label": "Compile description",
+            "group": "build",
+            "dependsOn": [
+                "md2nexus.bat"
+            ]
+        },
+        {
+            "label": "Compile DSD from xTranslator output",
             "group": "build",
             "dependsOn": [
                 "xTranslator-to-DSD.py"
+            ]
+        },
+        {
+            "label": "Compile DSD from xEdit output",
+            "group": "build",
+            "dependsOn": [
+                "xEdit-to-DSD.py"
             ]
         },
         {
@@ -61,6 +81,20 @@
             "group": "build",
             "dependsOn": [
                 "create-folders.py"
+            ]
+        },
+        {
+            "label": "Copy to dist",
+            "group": "build",
+            "dependsOn": [
+                "copy-img.bat"
+            ]
+        },
+        {
+            "label": "Copy to MO2\\mods",
+            "group": "build",
+            "dependsOn": [
+                "mo2-mod.bat"
             ]
         },
         {
@@ -72,33 +106,12 @@
             ]
         },
         {
-            "label": "Copy to dist",
-            "group": "build",
-            "dependsOn": [
-                "copy-img.bat"
-            ]
-        },
-        {
             "label": "Zip to MO2\\downloads",
             "group": "build",
             "dependsOn": [
                 "copy-img.bat",
                 "zip.bat",
                 "mo2-downloads.bat"
-            ]
-        },
-        {
-            "label": "Copy to MO2\\mods",
-            "group": "build",
-            "dependsOn": [
-                "mo2-mod.bat"
-            ]
-        },
-        {
-            "label": "Compile description",
-            "group": "build",
-            "dependsOn": [
-                "md2nexus.bat"
             ]
         },
         {
