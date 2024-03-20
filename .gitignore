@@ -30,6 +30,8 @@ build/release/
 *test*.*
 ExampleScript.pex
 !*Contest*.*
+src/strings/
+*.esp
 
 # Dependencies #
 
