@@ -18,18 +18,18 @@ def parse_data(file_path):
 			# line = line.strip()  # Remove leading and trailing whitespace
 			line = line.replace('\n', '') # Remove only trailing line breaks
 
-			# If the line starts with '_RECORD_', it indicates the start of a new entry
-			if line.startswith('_RECORD_'):
+			# If the line starts with '[STRING]', it indicates the start of a new entry
+			if line.startswith('[STRING]'):
 				if current_data:
 					parsed_data.append(current_data)
 					current_data = {}
 				continue
 
 			# Split each line into key and value
-			key, value = line.split(": ", 1)
-
-			# Store key-value pairs in the current data dictionary
-			current_data[key] = value
+			key_value_pair = line.split(": ", 1)
+			if len(key_value_pair) == 2:
+				key, value = key_value_pair
+				current_data[key] = value
 
 		# Add the last entry if any
 		if current_data:
@@ -63,6 +63,10 @@ def main():
 	parsed_data = parse_data(file_path)
 	for entry in parsed_data:
 		print(entry)
+
+	output = str(parsed_data)
+	with open (output_path, 'w') as f:
+		f.write(output)
 
 if __name__ == "__main__":
 	main()
