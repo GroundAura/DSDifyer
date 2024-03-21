@@ -39,32 +39,19 @@ def parse_data(file_path):
 
 def data_to_dsd(data, include_identical_strings):
 	combined_content = "[\n"
-	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+	# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+	values_edid = ["NPC_ SHRT", "WOOP TNAM", "GMST DATA", "BOOK CNAM", "MGEF DNAM"]
+	values_fid = ["REFR FULL", "DIAL FULL", "INFO RNAM"]
+	values_fid_index = ["QUST NNAM", "INFO NAM1"]
+	values_orig = ["ACTI RNAM", "FLOR RNAM", "REGN RDMP", "PERK EPFD", "QUST CNAM", "MESG ITXT"]
 	for entry in data:
-		new_plugin = entry['Current Plugin']
-		original_plugin = entry['Master Plugin']
-		editor_id = entry['EditorID']
-		record_type = entry['Record Type'] + " " + entry['Data Type']
-		original_string = entry['Master Value']
 		new_string = entry['Current Value']
-
-		# print(f"new_plugin: '{new_plugin}'")
-		# print(f"original_plugin: '{original_plugin}'")
-		# print(f"editor_id: '{editor_id}'")
-		# print(f"record_type: '{record_type}'")
-		# print(f"original_string: '{original_string}'")
-		# print(f"new_string: '{new_string}'")
-		# print()
-
+		original_string = entry['Master Value']
 		if not original_string == new_string or include_identical_strings == True:
+			# new_plugin = entry['Current Plugin']
+			# original_plugin = entry['Master Plugin']
+			record_type = entry['Record Type'] + " " + entry['Data Type']
 			record_type = record_type.replace("DATA\\Name", "DATA")
-			original_string = original_string.replace("\\\\", "\\\\\\\\")
-			original_string = original_string.replace("\"", "\\" + "\"")
-			original_string = original_string.replace("\b", "\\" + "b")
-			original_string = original_string.replace("\f", "\\" + "f")
-			original_string = original_string.replace("\n", "\\" + "n")
-			original_string = original_string.replace("\r", "\\" + "r")
-			original_string = original_string.replace("\t", "\\" + "t")
 			new_string = new_string.replace("\\\\", "\\\\\\\\")
 			new_string = new_string.replace("\"", "\\" + "\"")
 			new_string = new_string.replace("\b", "\\" + "b")
@@ -72,18 +59,50 @@ def data_to_dsd(data, include_identical_strings):
 			new_string = new_string.replace("\n", "\\" + "n")
 			new_string = new_string.replace("\r", "\\" + "r")
 			new_string = new_string.replace("\t", "\\" + "t")
-
-			combined_content += template + "\n"
-			combined_content = combined_content.replace("[editor_id]", editor_id)
-			combined_content = combined_content.replace("[record_type]", record_type)
-			combined_content = combined_content.replace("[original_string]", original_string)
-			combined_content = combined_content.replace("[new_string]", new_string)
-
+			# new_string = new_string.replace("’", "'")
+			if record_type in values_fid:
+				form_id = entry['FormID']
+				template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
+				combined_content = combined_content.replace("[form_id]", form_id)
+				combined_content = combined_content.replace("[record_type]", record_type)
+				combined_content = combined_content.replace("[new_string]", new_string)
+			elif record_type in values_fid_index:
+				form_id = entry['FormID']
+				index_number = entry['Index']
+				template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+				combined_content += template + "\n"
+				combined_content = combined_content.replace("[form_id]", form_id)
+				combined_content = combined_content.replace("[record_type]", record_type)
+				combined_content = combined_content.replace("[index_number]", index_number)
+				combined_content = combined_content.replace("[new_string]", new_string)
+			elif record_type in values_orig:
+				template = "\t{\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+				original_string = original_string.replace("\\\\", "\\\\\\\\")
+				original_string = original_string.replace("\"", "\\" + "\"")
+				original_string = original_string.replace("\b", "\\" + "b")
+				original_string = original_string.replace("\f", "\\" + "f")
+				original_string = original_string.replace("\n", "\\" + "n")
+				original_string = original_string.replace("\r", "\\" + "r")
+				original_string = original_string.replace("\t", "\\" + "t")
+				combined_content += template + "\n"
+				combined_content = combined_content.replace("[record_type]", record_type)
+				combined_content = combined_content.replace("[original_string]", original_string)
+				combined_content = combined_content.replace("[new_string]", new_string)
+			elif record_type in values_edid or entry['Data Type'] == "FULL" or entry['Data Type'] == "DESC":
+				editor_id = entry['EditorID']
+				template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+				combined_content += template + "\n"
+				combined_content = combined_content.replace("[editor_id]", editor_id)
+				combined_content = combined_content.replace("[record_type]", record_type)
+				combined_content = combined_content.replace("[new_string]", new_string)
+			else:
+				print("ERROR: record type not supported by this script")
+			# todo: put folder creation here?
 	combined_content += "]"
 	combined_content = combined_content.replace("\t},\n]", "\t}\n]")
+	# combined_content = combined_content.replace("\t", "  ")
 	# print (combined_content)
 	return combined_content
-
 
 def main():
 	ROOT_PATH = os.getcwd()
@@ -131,8 +150,9 @@ def main():
 		print(f"ERROR: OUTPUT_PATH ('{output_path}') must be a directory to match SOURCE_PATH")
 		return
 
+	false_vars = ["false", "False", "FALSE", "0"]
 	include_identical_strings = config.get('XEDIT_TO_DSD', 'Include_Identical_Strings')
-	if include_identical_strings == "false" or include_identical_strings == "False" or include_identical_strings == "FALSE" or include_identical_strings == "0":
+	if include_identical_strings in false_vars:
 		include_identical_strings = False
 	else:
 		include_identical_strings = True
