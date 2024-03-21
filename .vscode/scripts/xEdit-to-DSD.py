@@ -124,7 +124,7 @@ def data_to_dsd(data, include_identical_strings):
 def main():
 	ROOT_PATH = os.getcwd()
 
-	CONFIG_PATH = os.path.join(ROOT_PATH, "xTranslator_to_DSD.ini")
+	CONFIG_PATH = os.path.join(ROOT_PATH, "xEdit-to-DSD.ini")
 
 	print(f"INFO: trying to read config file from: '{CONFIG_PATH}'")
 	config = read_config(CONFIG_PATH, False)
@@ -134,7 +134,7 @@ def main():
 	print("INFO: config found")
 
 	root_var = "[ROOT]"
-	source_path = config.get('XEDIT_TO_DSD', 'SOURCE_PATH')
+	source_path = config.get('GENERAL', 'SOURCE_PATH')
 	source_path = source_path.replace(root_var, ROOT_PATH)
 	# print(source_path)
 	if os.path.isfile(source_path):
@@ -147,28 +147,17 @@ def main():
 		print(f"ERROR: SOURCE_PATH ('{source_path}') cannot be detected as either a file nor directory")
 		return
 
-	output_path = config.get('XEDIT_TO_DSD', 'OUTPUT_PATH')
+	output_path = config.get('GENERAL', 'OUTPUT_PATH')
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	# print(output_path)
-	if os.path.isfile(output_path):
-		output_type = "file"
-		print(f"INFO: handling OUTPUT_PATH ('{output_path}') as a directory")
-	elif os.path.isdir(output_path):
-		output_type = "dir"
+	if os.path.isdir(output_path):
 		print(f"INFO: handling OUTPUT_PATH ('{output_path}') as a directory")
 	else:
-		print(f"ERROR: OUTPUT_PATH ('{output_path}') cannot be detected as either a file nor directory")
-		return
-
-	if source_type == "file" and output_type == "dir":
-		print(f"ERROR: OUTPUT_PATH ('{output_path}') must be a file to match SOURCE_PATH")
-		return
-	if source_type == "dir" and output_type == "file":
-		print(f"ERROR: OUTPUT_PATH ('{output_path}') must be a directory to match SOURCE_PATH")
+		print(f"ERROR: OUTPUT_PATH ('{output_path}') must be a directory")
 		return
 
 	false_vars = ["false", "False", "FALSE", "0"]
-	include_identical_strings = config.get('XEDIT_TO_DSD', 'Include_Identical_Strings')
+	include_identical_strings = config.get('GENERAL', 'Include_Identical_Strings')
 	if include_identical_strings in false_vars:
 		include_identical_strings = False
 	else:
