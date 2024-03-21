@@ -52,6 +52,8 @@ def data_to_dsd(data, include_identical_strings):
 			# original_plugin = entry['Master Plugin']
 			record_type = entry['Record Type'] + " " + entry['Data Type']
 			record_type = record_type.replace("DATA\\Name", "DATA")
+			# record_type = record_type.replace("DATA\\Int", "DATA")
+			# record_type = record_type.replace("DATA\\Bool", "DATA")
 			new_string = new_string.replace("\\\\", "\\\\\\\\")
 			new_string = new_string.replace("\"", "\\" + "\"")
 			new_string = new_string.replace("\b", "\\" + "b")
@@ -63,6 +65,7 @@ def data_to_dsd(data, include_identical_strings):
 			if record_type in values_fid:
 				form_id = entry['FormID']
 				template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
+				combined_content += template + "\n"
 				combined_content = combined_content.replace("[form_id]", form_id)
 				combined_content = combined_content.replace("[record_type]", record_type)
 				combined_content = combined_content.replace("[new_string]", new_string)
@@ -77,6 +80,7 @@ def data_to_dsd(data, include_identical_strings):
 				combined_content = combined_content.replace("[new_string]", new_string)
 			elif record_type in values_orig:
 				template = "\t{\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+				combined_content += template + "\n"
 				original_string = original_string.replace("\\\\", "\\\\\\\\")
 				original_string = original_string.replace("\"", "\\" + "\"")
 				original_string = original_string.replace("\b", "\\" + "b")
@@ -109,12 +113,12 @@ def main():
 
 	CONFIG_PATH = os.path.join(ROOT_PATH, "xTranslator_to_DSD.ini")
 
-	print(f"Info: trying to read config file from: '{CONFIG_PATH}'")
+	print(f"INFO: trying to read config file from: '{CONFIG_PATH}'")
 	config = read_config(CONFIG_PATH, False)
 	if not config:
-		print("Error: config not found or failed to read")
+		print("ERROR: config not found or failed to read")
 		return
-	print("Info: config found")
+	print("INFO: config found")
 
 	root_var = "[ROOT]"
 	source_path = config.get('XEDIT_TO_DSD', 'SOURCE_PATH')
@@ -129,7 +133,7 @@ def main():
 	else:
 		print(f"ERROR: SOURCE_PATH ('{source_path}') cannot be detected as either a file nor directory")
 		return
-	
+
 	output_path = config.get('XEDIT_TO_DSD', 'OUTPUT_PATH')
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	# print(output_path)
