@@ -38,9 +38,10 @@ def parse_data(file_path):
 	return parsed_data
 
 def data_to_dsd(data, include_identical_strings):
-	combined_content = "[\n"
 	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+	entry_content = ""
 	values_edid = ["NPC_ SHRT", "WOOP TNAM", "GMST DATA", "BOOK CNAM", "MGEF DNAM"]
+	# values_edid_index = ["MESG ITXT"]
 	values_fid = ["REFR FULL", "DIAL FULL", "INFO RNAM"]
 	values_fid_index = ["QUST NNAM", "INFO NAM1"]
 	values_orig = ["ACTI RNAM", "FLOR RNAM", "REGN RDMP", "PERK EPFD", "QUST CNAM", "MESG ITXT"]
@@ -48,14 +49,12 @@ def data_to_dsd(data, include_identical_strings):
 		new_string = entry['Current Value']
 		original_string = entry['Master Value']
 		if not original_string == new_string or include_identical_strings == True:
-			# new_plugin = entry['Current Plugin']
-			# original_plugin = entry['Master Plugin']
 			record_type = entry['Record Type'] + " " + entry['Data Type']
 			# record_type = record_type.replace("DATA\\Bool", "DATA")
 			# record_type = record_type.replace("DATA\\Float", "DATA")
 			# record_type = record_type.replace("DATA\\Int", "DATA")
 			record_type = record_type.replace("DATA\\Name", "DATA")
-			record_type = record_type.replace("EPFD\Text", "EPFD")
+			record_type = record_type.replace("EPFD\\Text", "EPFD")
 			new_string = new_string.replace("\\\\", "\\\\\\\\")
 			new_string = new_string.replace("\"", "\\" + "\"")
 			new_string = new_string.replace("\b", "\\" + "b")
@@ -67,27 +66,38 @@ def data_to_dsd(data, include_identical_strings):
 			if record_type in values_fid:
 				form_id = entry['FormID']
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
-				combined_content += template + "\n"
-				combined_content = combined_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
-				combined_content = combined_content.replace("[form_id]", form_id)
-				combined_content = combined_content.replace("[record_type]", record_type)
-				combined_content = combined_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
-				combined_content = combined_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
-				combined_content = combined_content.replace("[new_string]", new_string)
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
+				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_index:
 				form_id = entry['FormID']
 				index_number = entry['Index']
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-				combined_content += template + "\n"
-				combined_content = combined_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
-				combined_content = combined_content.replace("[form_id]", form_id)
-				combined_content = combined_content.replace("[record_type]", record_type)
-				combined_content = combined_content.replace("[index_number]", index_number)
-				combined_content = combined_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
-				combined_content = combined_content.replace("[new_string]", new_string)
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
+				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("[index_number]", index_number)
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
+			# elif record_type in values_edid_index:
+			# 	editor_id = entry['EditorID']
+			# 	index_number = entry['Index']
+			# 	# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+			# 	entry_content += template + "\n"
+			# 	entry_content = entry_content.replace("[editor_id]", editor_id)
+			# 	entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+			# 	entry_content = entry_content.replace("[record_type]", record_type)
+			# 	entry_content = entry_content.replace("[index_number]", index_number)
+			# 	entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+			# 	entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_orig:
 				# template = "\t{\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-				combined_content += template + "\n"
+				entry_content += template + "\n"
 				original_string = original_string.replace("\\\\", "\\\\\\\\")
 				original_string = original_string.replace("\"", "\\" + "\"")
 				original_string = original_string.replace("\b", "\\" + "b")
@@ -95,31 +105,27 @@ def data_to_dsd(data, include_identical_strings):
 				original_string = original_string.replace("\n", "\\" + "n")
 				original_string = original_string.replace("\r", "\\" + "r")
 				original_string = original_string.replace("\t", "\\" + "t")
-				combined_content += template + "\n"
-				combined_content = combined_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
-				combined_content = combined_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
-				combined_content = combined_content.replace("[record_type]", record_type)
-				combined_content = combined_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
-				combined_content = combined_content.replace("[original_string]", original_string)
-				combined_content = combined_content.replace("[new_string]", new_string)
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("[original_string]", original_string)
+				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_edid or entry['Data Type'] == "FULL" or entry['Data Type'] == "DESC":
 				editor_id = entry['EditorID']
 				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-				combined_content += template + "\n"
-				combined_content = combined_content.replace("[editor_id]", editor_id)
-				combined_content = combined_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
-				combined_content = combined_content.replace("[record_type]", record_type)
-				combined_content = combined_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
-				combined_content = combined_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
-				combined_content = combined_content.replace("[new_string]", new_string)
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("[editor_id]", editor_id)
+				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
 			else:
 				print("ERROR: record type ('{record_type}') is not supported by this script")
-			# todo: put folder creation here?
-	combined_content += "]"
-	combined_content = combined_content.replace("\t},\n]", "\t}\n]")
-	# combined_content = combined_content.replace("\t", "  ")
-	# print (combined_content)
-	return combined_content
+	# print (entry_content)
+	return entry_content
 
 def main():
 	ROOT_PATH = os.getcwd()
@@ -163,27 +169,58 @@ def main():
 	else:
 		include_identical_strings = True
 
+	plugin_extensions = [".esp", ".esm", ".esl"]
 	if source_type == "file":
 		input_file = source_path
 		parsed_data = parse_data(input_file)
-		output = data_to_dsd(parsed_data, include_identical_strings)
-		output_file = output_path
-		with open(output_file, 'w') as f:
-			f.write(output)
-			print(f"INFO: translated '{input_file}' to '{output_file}'")
-		# print(output)
+		for entry in parsed_data:
+			output = "[\n"
+			output += data_to_dsd([entry], include_identical_strings)
+			output += "]"
+			output = output.replace("\t},\n]", "\t}\n]")
+			# output = output.replace("\t", "  ")
+			# print(output)
+			if not output == "[\n]":
+				new_plugin = entry['Current Plugin']
+				original_plugin = entry['Master Plugin']
+				output_folder = os.path.join(output_path, original_plugin)
+				if not os.path.exists(output_folder):
+					os.makedirs(output_folder)
+				output_file_name = new_plugin
+				for extension in plugin_extensions:
+					output_file_name = output_file_name.replace(extension, ".json")
+				output_file = os.path.join(output_folder, output_file_name)
+				with open(output_file, 'w') as f:
+					f.write(output)
+					print(f"INFO: translated entry from '{input_file}' into '{output_file}'")
 	else:
+		input_extensions = [".txt"]
 		for _, _, files in os.walk(source_path):
 			for file in files:
-				if file.endswith('.txt'):
-					input_file = os.path.join(source_path, file)
-					parsed_data = parse_data(input_file)
-					output = data_to_dsd(parsed_data, include_identical_strings)
-					output_file = os.path.join(output_path, file.removesuffix(".txt") + ".json")
-					with open(output_file, 'w') as f:
-						f.write(output)
-						print(f"INFO: translated '{input_file}' to '{output_file}'")
-					# print(output)
+				for extension in input_extensions:
+					if file.endswith(extension):
+						input_file = os.path.join(source_path, file)
+						parsed_data = parse_data(input_file)
+						for entry in parsed_data:
+							output = "[\n"
+							output += data_to_dsd([entry], include_identical_strings)
+							output += "]"
+							output = output.replace("\t},\n]", "\t}\n]")
+							# output = output.replace("\t", "  ")
+							# print(output)
+							if not output == "[\n]":
+								new_plugin = entry['Current Plugin']
+								original_plugin = entry['Master Plugin']
+								output_folder = os.path.join(output_path, original_plugin)
+								if not os.path.exists(output_folder):
+									os.makedirs(output_folder)
+								output_file_name = new_plugin
+								for extension in plugin_extensions:
+									output_file_name = output_file_name.replace(extension, ".json")
+								output_file = os.path.join(output_folder, output_file_name)
+								with open(output_file, 'w') as f:
+									f.write(output)
+									print(f"INFO: translated entry from '{input_file}' into '{output_file}'")
 
 if __name__ == "__main__":
 	main()
