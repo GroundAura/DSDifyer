@@ -8,6 +8,16 @@ def read_config(file_path, case_sensitive):
 	config.read(file_path)
 	return config
 
+def create_text_file(file_path, content):
+	try:
+		# Open the file in write mode ('w')
+		with open(file_path, 'w') as file:
+			# Write the content to the file
+			file.write(content)
+		print(f"INFO: File '{file_path}' created successfully.")
+	except Exception as e:
+		print(f"ERROR: Error creating file '{file_path}': {e}")
+
 # Define a function to parse the data from the file
 def parse_data(file_path):
 	parsed_data = []
@@ -39,9 +49,9 @@ def parse_data(file_path):
 
 def format_formid(formid_dec, plugin):
 	formid_dec = int(formid_dec)
-	# print(f"FormID (dec): {formid_dec}")
+	# print(f"TRACE: FormID (dec): {formid_dec}")
 	formid = hex(formid_dec)[2:]
-	# print(f"FormID (hex): {formid}")
+	# print(f"TRACE: FormID (hex): {formid}")
 	if len(formid) <= 6:
 		while len(formid) < 8:
 			formid = "0" + formid
@@ -69,12 +79,13 @@ def format_formid(formid_dec, plugin):
 			formid = "[0x" + formid + "~" + plugin + "]"
 		return formid
 	else:
-		print(f"ERROR: FormID ('{formid}') longer than expected")
+		print(f"ERROR: FormID '{formid}' longer than expected.")
 		return
 
 def data_to_dsd(data, include_identical_strings):
-	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+	combined_content = ""
 	entry_content = ""
+	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 	values_edid = ["NPC_ SHRT", "WOOP TNAM", "GMST DATA", "BOOK CNAM", "MGEF DNAM"]
 	# values_edid_index = ["MESG ITXT"]
 	values_fid = ["REFR FULL", "DIAL FULL", "INFO RNAM"]
@@ -158,21 +169,24 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			else:
-				print("ERROR: record type ('{record_type}') is not supported by this script")
-	# print (entry_content)
-	return entry_content
+				print(f"ERROR: Record type '{record_type}' is not supported by this script.")
+				# return
+		# print (entry_content)
+		combined_content += entry_content
+	# print (combined_content)
+	return combined_content
 
 def main():
 	ROOT_PATH = os.getcwd()
 
 	CONFIG_PATH = os.path.join(ROOT_PATH, "xEdit-to-DSD.ini")
 
-	print(f"INFO: trying to read config file from: '{CONFIG_PATH}'")
+	print(f"INFO: Trying to read config file from: '{CONFIG_PATH}'.")
 	config = read_config(CONFIG_PATH, False)
 	if not config:
-		print("ERROR: config not found or failed to read")
+		print("ERROR: Config not found or failed to read.")
 		return
-	print("INFO: config found")
+	print("INFO: Config found.")
 
 	root_var = "[ROOT]"
 	source_path = config.get('GENERAL', 'SOURCE_PATH')
@@ -180,42 +194,42 @@ def main():
 	# print(source_path)
 	if os.path.isfile(source_path):
 		source_type = "file"
-		print(f"INFO: handling SOURCE_PATH ('{source_path}') as a file")
+		print(f"INFO: Handling SOURCE_PATH ['{source_path}'] as a file.")
 	elif os.path.isdir(source_path):
 		source_type = "dir"
-		print(f"INFO: handling SOURCE_PATH ('{source_path}') as a directory")
+		print(f"INFO: Handling SOURCE_PATH ['{source_path}'] as a directory.")
 	else:
-		print(f"ERROR: SOURCE_PATH ('{source_path}') cannot be detected as either a file nor directory")
+		print(f"ERROR: SOURCE_PATH ['{source_path}'] cannot be detected as either a file nor directory.")
 		return
 
 	output_path = config.get('GENERAL', 'OUTPUT_PATH')
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	# print(output_path)
 	if os.path.isdir(output_path):
-		print(f"INFO: handling OUTPUT_PATH ('{output_path}') as a directory")
+		print(f"INFO: Handling OUTPUT_PATH ['{output_path}'] as a directory.")
 	else:
-		print(f"ERROR: OUTPUT_PATH ('{output_path}') must be a directory")
+		print(f"ERROR: OUTPUT_PATH ['{output_path}'] must be a directory.")
 		return
 
-	false_vars = ["false", "False", "FALSE", "0"]
+	false_vars = ["false", "False", "FALSE", "f", "F", "0"]
 	include_identical_strings = config.get('GENERAL', 'Include_Identical_Strings')
 	if include_identical_strings in false_vars:
 		include_identical_strings = False
 	else:
 		include_identical_strings = True
 
-	plugin_extensions = [".esp", ".esm", ".esl"]
+	# # # add x entries to each json, then go back over and fix them once there's no more entries # # #
+	# # # struggling with getting the exact path to each ouput file # # #
 	if source_type == "file":
+		plugin_extensions = [".esp", ".esm", ".esl"]
+		starting_content = ""
+		# starting_content = "[\n"
 		input_file = source_path
 		parsed_data = parse_data(input_file)
 		for entry in parsed_data:
-			output = "[\n"
-			output += data_to_dsd([entry], include_identical_strings)
-			output += "]"
-			output = output.replace("\t},\n]", "\t}\n]")
-			# output = output.replace("\t", "  ")
-			# print(output)
-			if not output == "[\n]":
+			json_entry = data_to_dsd([entry], include_identical_strings)
+			output = ""
+			if not json_entry == "":
 				new_plugin = entry['Current Plugin']
 				original_plugin = entry['Master Plugin']
 				output_folder = os.path.join(output_path, original_plugin)
@@ -225,37 +239,74 @@ def main():
 				for extension in plugin_extensions:
 					output_file_name = output_file_name.replace(extension, ".json")
 				output_file = os.path.join(output_folder, output_file_name)
-				with open(output_file, 'w') as f:
-					f.write(output)
-					print(f"INFO: translated entry from '{input_file}' into '{output_file}'")
-	else:
-		input_extensions = [".txt"]
-		for _, _, files in os.walk(source_path):
-			for file in files:
-				for extension in input_extensions:
-					if file.endswith(extension):
-						input_file = os.path.join(source_path, file)
-						parsed_data = parse_data(input_file)
-						for entry in parsed_data:
+				# print(f"TRACE: Trying to read file from '{output_file}'.")
+				if os.path.isfile(output_file):
+					try:
+						with open(output_file, 'r') as f:
+							output = f.read()
+						if output.endswith("]"):
+							print(f"INFO: File '{output_file}' already exists, overwriting file.")
+							create_text_file(output_file, starting_content)
+							with open(output_file, 'r') as f:
+								output = f.read()
+						if output == "":
 							output = "[\n"
-							output += data_to_dsd([entry], include_identical_strings)
+						output += json_entry
+						# print(output)
+						with open(output_file, 'w') as f:
+							f.write(output)
+							# print(f"TRACE: Translated entry from '{input_file}' into '{output_file}'.")
+					except Exception as e:
+						print(f"ERROR: error reading '{output_file}': {e}")
+				else:
+					# print(f"ERROR: File '{output_file}' can't be found.")
+					print(f"INFO: File '{output_file}' can't be found, creating file.")
+					create_text_file(output_file, starting_content)
+		for root, _, files in os.walk(output_path):
+			for file_name in files:
+				output_file = os.path.join(root, file_name)
+				# print(f"INFO: Trying to read file from '{output_file}'.")
+				if os.path.isfile(output_file):
+					try:
+						with open(output_file, 'r') as f:
+							output = f.read()
+						if not output.endswith("]"):
 							output += "]"
-							output = output.replace("\t},\n]", "\t}\n]")
-							# output = output.replace("\t", "  ")
-							# print(output)
-							if not output == "[\n]":
-								new_plugin = entry['Current Plugin']
-								original_plugin = entry['Master Plugin']
-								output_folder = os.path.join(output_path, original_plugin)
-								if not os.path.exists(output_folder):
-									os.makedirs(output_folder)
-								output_file_name = new_plugin
-								for extension in plugin_extensions:
-									output_file_name = output_file_name.replace(extension, ".json")
-								output_file = os.path.join(output_folder, output_file_name)
-								with open(output_file, 'w') as f:
-									f.write(output)
-									print(f"INFO: translated entry from '{input_file}' into '{output_file}'")
+						output = output.replace("\t},\n]", "\t}\n]")
+						# output = output.replace("\t", "  ")
+						with open(output_file, 'w') as f:
+							f.write(output)
+							print(f"INFO: Finished formatting file: '{output_file}'.")
+					except Exception as e:
+						print(f"ERROR: Error reading '{output_file}': {e}")
+	# else:
+	# 	input_extensions = [".txt"]
+	# 	for _, _, files in os.walk(source_path):
+	# 		for file in files:
+	# 			for extension in input_extensions:
+	# 				if file.endswith(extension):
+	# 					input_file = os.path.join(source_path, file)
+	# 					parsed_data = parse_data(input_file)
+	# 					for entry in parsed_data:
+	# 						output = "[\n"
+	# 						output += data_to_dsd([entry], include_identical_strings)
+	# 						output += "]"
+	# 						output = output.replace("\t},\n]", "\t}\n]")
+	# 						# output = output.replace("\t", "  ")
+	# 						# print(output)
+	# 						if not output == "[\n]":
+	# 							new_plugin = entry['Current Plugin']
+	# 							original_plugin = entry['Master Plugin']
+	# 							output_folder = os.path.join(output_path, original_plugin)
+	# 							if not os.path.exists(output_folder):
+	# 								os.makedirs(output_folder)
+	# 							output_file_name = new_plugin
+	# 							for extension in plugin_extensions:
+	# 								output_file_name = output_file_name.replace(extension, ".json")
+	# 							output_file = os.path.join(output_folder, output_file_name)
+	# 							with open(output_file, 'w') as f:
+	# 								f.write(output)
+	# 								print(f"INFO: Translated entry from '{input_file}' into '{output_file}'.")
 
 if __name__ == "__main__":
 	main()
