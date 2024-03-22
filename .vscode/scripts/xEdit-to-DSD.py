@@ -37,6 +37,41 @@ def parse_data(file_path):
 
 	return parsed_data
 
+def format_formid(formid_dec, plugin):
+	formid_dec = int(formid_dec)
+	# print(f"FormID (dec): {formid_dec}")
+	formid = hex(formid_dec)[2:]
+	# print(f"FormID (hex): {formid}")
+	if len(formid) <= 6:
+		while len(formid) < 8:
+			formid = "0" + formid
+		formid = "[" + formid + "]"
+		return formid
+	elif len(formid) == 7:
+		if formid.startswith("1") or formid.startswith("2") or formid.startswith("3") or formid.startswith("4"):
+			formid = "[0" + formid + "]"
+		else:
+			formid = formid[1:]
+			while len(formid) > 1 and formid.startswith("0"):
+				formid = formid[1:]
+			formid = "[0x" + formid + "~" + plugin + "]"
+		return formid
+	elif len(formid) == 8:
+		if formid.startswith("fe"):
+			formid = formid[5:]
+			while len(formid) > 1 and formid.startswith("0"):
+				formid = formid[1:]
+			formid = "[0x" + formid + "~" + plugin + "]"
+		else:
+			formid = formid[2:]
+			while len(formid) > 1 and formid.startswith("0"):
+				formid = formid[1:]
+			formid = "[0x" + formid + "~" + plugin + "]"
+		return formid
+	else:
+		print(f"ERROR: FormID ('{formid}') longer than expected")
+		return
+
 def data_to_dsd(data, include_identical_strings):
 	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 	entry_content = ""
@@ -64,7 +99,7 @@ def data_to_dsd(data, include_identical_strings):
 			new_string = new_string.replace("\t", "\\" + "t")
 			# new_string = new_string.replace("’", "'")
 			if record_type in values_fid:
-				form_id = entry['FormID']
+				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
@@ -74,7 +109,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_index:
-				form_id = entry['FormID']
+				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				index_number = entry['Index']
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
