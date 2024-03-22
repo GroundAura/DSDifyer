@@ -215,6 +215,7 @@ def main():
 			original_plugin = entry['Master Plugin']
 			output_folder = os.path.join(output_path, "SKSE\\Plugins\\DynamicStringDistributor", original_plugin)
 			if not os.path.exists(output_folder):
+				print(f"INFO: Directory '{output_folder}' can't be found, creating directory.")
 				os.makedirs(output_folder)
 			output_file_name = new_plugin
 			for extension in plugin_extensions:
