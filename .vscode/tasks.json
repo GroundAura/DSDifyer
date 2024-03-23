@@ -115,7 +115,7 @@
             ]
         },
         {
-            "label": "Zip script to build",
+            "label": "Zip DSDifyer to build",
             "group": "build",
             "dependsOn": [
                 "zip2.bat"

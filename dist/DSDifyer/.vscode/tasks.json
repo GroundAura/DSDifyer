@@ -2,16 +2,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "xTranslator-to-DSD.py",
+            "label": "xEdit-to-DSD.py",
             "type": "shell",
             "command": "${command:python.interpreterPath}",
-            "args": ["xTranslator-to-DSD.py"]
+            "args": ["xEdit-to-DSD.py"]
         },
         {
-            "label": "xTranslator to DSD",
+            "label": "xEdit to DSD",
             "group": "build",
             "dependsOn": [
-                "xTranslator-to-DSD.py"
+                "xEdit-to-DSD.py"
             ]
         }
     ]
