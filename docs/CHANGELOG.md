@@ -1,4 +1,4 @@
-# More Immersive Text - Changelog
+# DSDifyer - Changelog
 
 ## Version 1.0.0
 
