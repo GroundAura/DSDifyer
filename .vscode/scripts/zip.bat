@@ -1,3 +1,3 @@
-del "build\More Immersive Text.zip"
-cd "dist\More Immersive Text"
-"C:\Program Files\7-Zip\7z" a -tzip "..\..\build\More Immersive Text.zip"
+del "build\DSDifyer.zip"
+cd "dist\DSDifyer"
+"C:\Program Files\7-Zip\7z" a -tzip "..\..\build\DSDifyer.zip"
