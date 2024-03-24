@@ -24,14 +24,14 @@ build/release/
 #dist/**/scripts/*.pex
 
 # Custom #
-*PluginName*MCM.pex
-*snippets.*
-*temp.*
-*test*.*
-ExampleScript.pex
-!*Contest*.*
-src/strings/
 *.esp
+*PluginName*MCM.pex
+*snippets*.*
+*temp*.*
+*test*.*
+!*Contest*.*
+ExampleScript.pex
+src/strings/
 
 # Dependencies #
 
