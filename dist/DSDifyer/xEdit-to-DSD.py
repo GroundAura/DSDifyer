@@ -38,9 +38,9 @@ def parse_data(file_path):
 
 def format_formid(formid_dec, plugin):
 	formid_dec = int(formid_dec)
-	# print(f"TRACE: FormID (dec): {formid_dec}")
+	# print(f"TRACE: FormID (dec): '{formid_dec}'.")
 	formid = hex(formid_dec)[2:]
-	# print(f"TRACE: FormID (hex): {formid}")
+	# print(f"TRACE: FormID (hex): '{formid}'.")
 	if len(formid) <= 6:
 		while len(formid) < 8:
 			formid = "0" + formid
@@ -141,7 +141,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("[index_number]", index_number)
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			if record_type in values_fid_orig:
+			elif record_type in values_fid_orig:
 				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
