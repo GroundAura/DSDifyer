@@ -44,28 +44,28 @@ def format_formid(formid_dec, plugin):
 	if len(formid) <= 6:
 		while len(formid) < 8:
 			formid = "0" + formid
-		formid = "[" + formid + "]"
+		formid = formid + "|" + plugin
 		return formid
 	elif len(formid) == 7:
 		if formid.startswith("1") or formid.startswith("2") or formid.startswith("3") or formid.startswith("4"):
-			formid = "[0" + formid + "]"
+			formid = "0" + formid + "|" + plugin
 		else:
 			formid = formid[1:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
-			formid = "[0x" + formid + "~" + plugin + "]"
+			formid = formid + "|" + plugin
 		return formid
 	elif len(formid) == 8:
 		if formid.startswith("fe"):
 			formid = formid[5:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
-			formid = "[0x" + formid + "~" + plugin + "]"
+			formid = formid + "|" + plugin
 		else:
 			formid = formid[2:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
-			formid = "[0x" + formid + "~" + plugin + "]"
+			formid = formid + "|" + plugin
 		return formid
 	else:
 		print(f"ERROR: FormID '{formid}' longer than expected.")
@@ -74,11 +74,12 @@ def format_formid(formid_dec, plugin):
 def data_to_dsd(data, include_identical_strings):
 	combined_content = ""
 	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-	values_edid = ["NPC_ SHRT", "WOOP TNAM", "GMST DATA", "BOOK CNAM", "MGEF DNAM"]
-	# values_edid_index = ["MESG ITXT"]
-	values_fid = ["REFR FULL", "DIAL FULL", "INFO RNAM"]
-	values_fid_index = ["QUST NNAM", "INFO NAM1"]
-	values_orig = ["ACTI RNAM", "FLOR RNAM", "REGN RDMP", "PERK EPFD", "QUST CNAM", "MESG ITXT"]
+	values_edid = ["GMST DATA"]
+	values_edid_index = []
+	values_fid = ["FULL", "DESC", "NPC_ SHRT", "WOOP TNAM", "INFO RNAM", "BOOK CNAM", "MGEF DNAM", "REGN RDMP", "PERK EPFD", "REFR FULL", "DIAL FULL", "INFO RNAM"]
+	values_fid_orig = ["ACTI RNAM", "FLOR RNAM", "QUST CNAM"]
+	values_fid_index = ["QUST NNAM", "INFO NAM1", "MESG ITXT", "PERK EPF2"]
+	values_orig = []
 	for entry in data:
 		entry_content = ""
 		new_string = entry['Current Value']
@@ -98,7 +99,28 @@ def data_to_dsd(data, include_identical_strings):
 			new_string = new_string.replace("\r", "\\" + "r")
 			new_string = new_string.replace("\t", "\\" + "t")
 			# new_string = new_string.replace("’", "'")
-			if record_type in values_fid:
+			if record_type in values_edid:
+				editor_id = entry['EditorID']
+				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("[editor_id]", editor_id)
+				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
+			elif record_type in values_edid_index:
+				editor_id = entry['EditorID']
+				index_number = entry['Index']
+				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("[editor_id]", editor_id)
+				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("[index_number]", index_number)
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
+			elif record_type in values_fid:
 				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
@@ -119,17 +141,16 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("[index_number]", index_number)
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			# elif record_type in values_edid_index:
-			# 	editor_id = entry['EditorID']
-			# 	index_number = entry['Index']
-			# 	# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-			# 	entry_content += template + "\n"
-			# 	entry_content = entry_content.replace("[editor_id]", editor_id)
-			# 	entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
-			# 	entry_content = entry_content.replace("[record_type]", record_type)
-			# 	entry_content = entry_content.replace("[index_number]", index_number)
-			# 	entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
-			# 	entry_content = entry_content.replace("[new_string]", new_string)
+			if record_type in values_fid_orig:
+				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
+				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
+				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("[original_string]", original_string)
+				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_orig:
 				# template = "\t{\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
@@ -147,12 +168,22 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("[original_string]", original_string)
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_edid or entry['Data Type'] == "FULL" or entry['Data Type'] == "DESC":
+			elif entry['Data Type'] in values_edid:
 				editor_id = entry['EditorID']
 				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
+			elif entry['Data Type'] in values_fid:
+				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
+				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
+				entry_content = entry_content.replace("[form_id]", form_id)
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
