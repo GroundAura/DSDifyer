@@ -2,16 +2,42 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Generate-Folders.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": ["Generate-Folders.py"]
+        },
+        {
             "label": "xEdit-to-DSD.py",
             "type": "shell",
             "command": "${command:python.interpreterPath}",
             "args": ["xEdit-to-DSD.py"]
         },
         {
-            "label": "xEdit to DSD",
+            "label": "xTranslator-to-DSD.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": ["xTranslator-to-DSD.py"]
+        },
+        {
+            "label": "Generate Folders from plugin list",
+            "group": "build",
+            "dependsOn": [
+                "Generate-Folders.py"
+            ]
+        },
+        {
+            "label": "Compile DSD from xEdit output",
             "group": "build",
             "dependsOn": [
                 "xEdit-to-DSD.py"
+            ]
+        },
+        {
+            "label": "Compile DSD from xTranslator output",
+            "group": "build",
+            "dependsOn": [
+                "xTranslator-to-DSD.py"
             ]
         }
     ]

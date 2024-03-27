@@ -167,8 +167,9 @@ def data_to_dsd(data, include_identical_strings):
 
 def main():
 	ROOT_PATH = os.getcwd()
-	CONFIG_PATH = os.path.join(ROOT_PATH, "xEdit-to-DSD.ini")
+	print(f"INFO: Current working directory: '{ROOT_PATH}'.")
 
+	CONFIG_PATH = os.path.join(ROOT_PATH, "xEdit-to-DSD.ini")
 	print(f"INFO: Trying to read config file from: '{CONFIG_PATH}'.")
 	config = read_config(CONFIG_PATH, False)
 	if not config:

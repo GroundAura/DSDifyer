@@ -69,47 +69,61 @@ def xTranslator_to_DSD(xml_file, replace_original_string, replace_new_string):
 
 def main():
 	ROOT_PATH = os.getcwd()
+	print(f"INFO: Current working directory: '{ROOT_PATH}'.")
 
 	CONFIG_PATH = os.path.join(ROOT_PATH, "xTranslator_to_DSD.ini")
-
-	print(f"Info: trying to read config file from: '{CONFIG_PATH}'")
+	print(f"INFO: Trying to read config file from: '{CONFIG_PATH}'.")
 	config = read_config(CONFIG_PATH, False)
 	if not config:
-		print("Error: config not found or failed to read")
+		print("ERROR: Config not found or failed to read.")
 		return
-	print("Info: config found")
-
+	print("INFO: Config found.")
 	root_var = "[ROOT]"
-	source_path = config.get('GENERATE_DSD', 'SOURCE_FOLDER')
+	false_vars = ["false", "False", "FALSE", "f", "F", "0"]
+
+	source_path = config.get('GENERAL', 'SOURCE_PATH')
 	source_path = source_path.replace(root_var, ROOT_PATH)
 	# print(source_path)
+	if os.path.isdir(source_path):
+		print(f"INFO: Handling SOURCE_PATH ['{source_path}'] as a directory.")
+	else:
+		print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a directory.")
+		return
 	
-	output_path = config.get('GENERATE_DSD', 'OUTPUT_FOLDER')
+	output_path = config.get('GENERAL', 'OUTPUT_PATH')
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	# print(output_path)
+	if os.path.isdir(output_path):
+		print(f"INFO: Handling OUTPUT_PATH ['{output_path}'] as a directory.")
+	else:
+		print(f"ERROR: OUTPUT_PATH ['{output_path}'] must be a directory.")
+		return
 
-	if config.get('GENERATE_DSD', 'Forward_Original_String') == "false":
+	replace_original_string = config.get('GENERAL', 'Forward_Original_String')
+	if replace_original_string in false_vars:
 		replace_original_string = False
 	else:
 		replace_original_string = True
 
-	if config.get('GENERATE_DSD', 'Forward_Replacement_String') == "false":
+	replace_new_string = config.get('GENERAL', 'Forward_New_String')
+	if replace_new_string in false_vars:
 		replace_new_string = False
 	else:
 		replace_new_string = True
 
+	extention = ".xml"
 	for _, _, files in os.walk(source_path):
 		for file in files:
-			if file.endswith('.xml'):
-				xml_file = os.path.join(ROOT_PATH, source_path, file)
+			if file.endswith(extention):
+				xml_file = os.path.join(source_path, file)
 				output = xTranslator_to_DSD(xml_file, replace_original_string, replace_new_string)
 				# print(file)
-				# output_file_name = file.removesuffix(".xml") + ".json"
+				output_file_name = file.replace(extention, ".json")
 				# print(output_file_name)
-				output_file = os.path.join(ROOT_PATH, output_path, file.removesuffix(".xml") + ".json")
+				output_file = os.path.join(output_path, output_file_name)
 				with open(output_file, 'w') as f:
 					f.write(output)
-					print(f"Info: translated '{xml_file}' to '{output_file}'")
+					print(f"INFO: Generated file '{output_file}' from '{xml_file}'.")
 				# print(output)
 
 if __name__ == "__main__":
