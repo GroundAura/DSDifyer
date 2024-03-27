@@ -44,28 +44,28 @@ def format_formid(formid_dec, plugin):
 	if len(formid) <= 6:
 		while len(formid) < 8:
 			formid = "0" + formid
-		formid = formid + "|" + plugin
+		formid = "0x" + formid + "|" + plugin
 		return formid
 	elif len(formid) == 7:
 		if formid.startswith("1") or formid.startswith("2") or formid.startswith("3") or formid.startswith("4"):
-			formid = "0" + formid + "|" + plugin
+			formid = "0x0" + formid + "|" + plugin
 		else:
 			formid = formid[1:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
-			formid = formid + "|" + plugin
+			formid = "0x" + formid + "|" + plugin
 		return formid
 	elif len(formid) == 8:
 		if formid.startswith("fe"):
 			formid = formid[5:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
-			formid = formid + "|" + plugin
+			formid = "0x" + formid + "|" + plugin
 		else:
 			formid = formid[2:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
-			formid = formid + "|" + plugin
+			formid = "0x" + formid + "|" + plugin
 		return formid
 	else:
 		print(f"ERROR: FormID '{formid}' longer than expected.")
