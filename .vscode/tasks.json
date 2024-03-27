@@ -2,6 +2,12 @@
 	"version": "2.0.0",
 	"tasks": [
         {
+            "label": "copy-script-to-xedit.bat",
+            "type": "shell",
+            "command": ".vscode\\scripts\\copy-script-to-xedit.bat",
+            "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+        },
+        {
             "label": "copy-scripts.bat",
             "type": "shell",
             "command": ".vscode\\scripts\\copy-scripts.bat",
@@ -63,6 +69,13 @@
             "group": "build",
             "dependsOn": [
                 "copy-scripts.bat"
+            ]
+        },
+        {
+            "label": "Copy to xEdit\\Edit Scripts",
+            "group": "build",
+            "dependsOn": [
+                "copy-script-to-xedit.bat"
             ]
         },
         {
