@@ -22,6 +22,11 @@ build/old/
 build/papyrus/
 build/release/
 #dist/**/scripts/*.pex
+dist/DSDifyer/Edit Scripts/DSDifyer.pas
+dist/DSDifyer/Generate-Folders.py
+dist/DSDifyer/LICENSE.txt
+dist/DSDifyer/xEdit-to-DSD.py
+dist/DSDifyer/xTranslator-to-DSD.py
 
 # Custom #
 *.esp
@@ -31,10 +36,6 @@ build/release/
 *test*.*
 !*Contest*.*
 .vscode/settings.json
-dist/DSDifyer/Edit Scripts/DSDifyer.pas
-dist/DSDifyer/Generate-Folders.py
-dist/DSDifyer/xEdit-to-DSD.py
-dist/DSDifyer/xTranslator-to-DSD.py
 ExampleScript.pex
 src/strings/
 
