@@ -102,6 +102,7 @@ begin
         AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'SHRT');
     end else
     if sSignature = 'PERK' then begin
+        // "Effects (sorted) \ i "Effect" \ "Function Parameters" \ "EPF2 - Button Label"
         // "Effects (sorted) \ i "Effect" \ "Function Parameters" \ "EPFD - Data" \ "Text"
         if ElementExists (e, 'Effects') then begin
             subRecord1 := ElementByName(e, 'Effects');
@@ -109,7 +110,13 @@ begin
             for i:= 0 to ElementCount(subRecord1) - 1 do begin
                 subRecord2 := ElementByIndex(subRecord1, i);
                 subRecord2M := ElementByIndex(subRecord1M, i);
-                AddDataByPath(i, subRecord2, subRecord2M, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'EPFD\Text');
+                if ElementExists (e, 'Function Parameters') then begin
+                    subRecord3 := ElementByName(e, 'Function Parameters');
+                    subRecord3M := ElementByName(m, 'Function Parameters');
+                    ix := GetElementEditValues(subRecord3M, 'EPF3\Fragment Index');
+                    AddDataByPath(ix, subRecord3, subRecord3M, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'EPF2');
+                    AddDataByPath(i, subRecord3, subRecord3M, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'EPFD\Text');
+                end;
             end;
         end;
     end else
@@ -132,8 +139,19 @@ begin
                 end;
             end;
         end;
+        // "Objectives (sorted)" \ i "Objective" \ "NNAM - Display Text"
+        if ElementExists (e, 'Objectives') then begin
+            subRecord1 := ElementByName(e, 'Objectives');
+            subRecord1M := ElementByName(m, 'Objectives');
+            for i:= 0 to ElementCount(subRecord1) - 1 do begin
+                subRecord2 := ElementByIndex(subRecord1, i);
+                subRecord2M := ElementByIndex(subRecord1M, i);
+                ix := GetElementEditValues(subRecord2M, 'QOBJ');
+                AddDataByPath(ix, subRecord2, subRecord2M, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'NNAM');
+            end;
+        end;
         // "NNAM - Description"
-        AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'NNAM');
+        //AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'NNAM');
     end else
     if sSignature = 'REGN' then begin
         // "Region Data Entries (sorted)" \ i "Region Data Entry" \ "RDMP - Map Name"

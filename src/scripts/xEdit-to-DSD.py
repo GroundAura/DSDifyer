@@ -117,7 +117,10 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
 				entry_content = entry_content.replace("[record_type]", record_type)
-				entry_content = entry_content.replace("[index_number]", index_number)
+				if not index_number == "-1":
+					entry_content = entry_content.replace("[index_number]", index_number)
+				else:
+					entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid:
@@ -138,7 +141,10 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[form_id]", form_id)
 				entry_content = entry_content.replace("[record_type]", record_type)
-				entry_content = entry_content.replace("[index_number]", index_number)
+				if not index_number == "-1":
+					entry_content = entry_content.replace("[index_number]", index_number)
+				else:
+					entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_orig:

@@ -30,9 +30,13 @@ build/release/
 *temp*.*
 *test*.*
 !*Contest*.*
+.vscode/settings.json
+dist/DSDifyer/Edit Scripts/DSDifyer.pas
+dist/DSDifyer/Generate-Folders.py
+dist/DSDifyer/xEdit-to-DSD.py
+dist/DSDifyer/xTranslator-to-DSD.py
 ExampleScript.pex
 src/strings/
-.vscode/settings.json
 
 # Dependencies #
 
