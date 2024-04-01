@@ -1,92 +1,125 @@
-# \[center\]![More Immersive Text](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/brand/Title.png)\[/center\]
+# \[center\]![DSDifyer](https://raw.githubusercontent.com/GroundAura/DSDifyer/main/docs/images/brand/Title.png)\[/center\]\[line\]
 
-## \[center\]![Overview](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Overview.png)\[/center\]
+\[font=Verdana\]**DSDifyer**\[/font\] is a collection of xEdit and Python scripts to assist with creating Dynamic String Distributor mods. This is a modders tool and **not** a playable file.
 
-\[font=Verdana\]**More Immersive Text**\[/font\] (or \[font=Verdana\]**M.I.T.**\[/font\]) is a mod that does a thing.
+I mainly made these for English to English changes, but they might be useful for other language translations too.
 
-## \[center\]![Details](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Details.png)\[/center\]
+## \[center\]![Installation](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Installation.png)\[/center\]
 
-## \[center\]![Features](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Features.png)\[/center\]
-
-## \[center\]![Info](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Info.png)\[/center\]
-
-## \[center\]![Preview](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Preview.png)\[/center\]
-
-## \[center\]![Installation](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Installation.png)\[/center\]
-
-Install M.I.T. like any other mod, with MO2 or another mod manager.
+Download and extract DSDifyer anywhere on your system. Move `DSDifyer.pas` to your `Edit Scripts` folder in your SSEEdit installation.
 
 ## \[font=Verdana\]**Requirements**\[/font\]
 
-None.
+- [Dynamic String Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/107676) - To use the DSD files in-game.
 
-- [ModName]()
+- [Python](https://www.python.org/downloads/) - To use the Python scripts.
+
+- [SSEEdit](https://www.nexusmods.com/skyrimspecialedition/mods/164) - To use the xEdit to DSD scripts.
+
+- [xTranslator](https://www.nexusmods.com/starfield/mods/313) - To use the xTranslator to DSD script.
 
 ## \[font=Verdana\]**Optional Requirements**\[/font\]
 
-None.
+- [VS Code](https://code.visualstudio.com/) and its [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) - To use the build tasks and generally make your life easier.
 
-- [ModName]() - Conditions.
+## \[center\]![Info](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Info.png)\[/center\]
 
-## \[font=Verdana\]**Mod Order (Mods View)**\[/font\]
+## \[font=Verdana\]**xEdit to DSD**\[/font\]
 
-Order doesn't matter.
+Gets data from xEdit and formats it as DSD files with folders. This is the most finished option with formatting for DSD v1.1.0.
 
-## \[font=Verdana\]**Plugin Order (Plugins View)**\[/font\]
+1. Open SSEEdit and load up all the files that have strings you want to replace.
 
-No plugins.
+2. Select the plugin(s) or record(s) that have strings you want to replace.
 
-Order doesn't matter.
+3. Right click. Select `Apply Script`. For Script select `DSDifyer`. Select `OK`.
 
-## \[center\]![Compatibility](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Compatibility.png)\[/center\]
+4. Wait until the xEdit script finishes running. If you selected a large amount of records like the base game ESMs this may take a few minutes.
 
-## \[font=Verdana\]\[color=#00ac46\]**Compatible:**\[/color\]\[/font\]
+5. When it prompts you, save the file to `{install_path}\input\DSDifyer Output.txt`. If it prompts you to overwrite the file, select `Yes`. You can now close xEdit.
 
-- [ModName]()
+6. Open the `DSDifyer` folder in VS Code.
 
-## \[font=Verdana\]\[color=#fdc500\]**Partially Compatible:**\[/color\]\[/font\]
+7. Press `Ctrl + Shift + P` to open the Command Pallete. Type to filter for and select `Python: Select Interpreter`. Select one of the options that says something like `Python 3.12.2 64-bit`. This should only need to be done once per workspace.
 
-\[font=Verdana\]\[color=#00ac46\]No known incompatibilities.\[/color\]\[/font\]
+8. Open `xEdit-to-DSD.ini` and change any settings if you want.
 
-## \[font=Verdana\]\[color=#dc0000\]**Incompatible:**\[/color\]\[/font\]
+9. Press `Ctrl + Shift + B` to open the Build Task Runner. Select `Compile DSD from xEdit output`.
 
-\[font=Verdana\]\[color=#00ac46\]No known incompatibilities.\[/color\]\[/font\]
+10. Wait until the Python script finishes running. If you selected a large amount of records this may take several minutes or longer. If it's too long it might not finish and you may have to kill the terminal; I'll look into optimizing this.
 
-## \[center\]![Recommendations](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Recommendations.png)\[/center\]
+11. Go to `{install_path}\output` to find your DSD files and folders.
 
-- [ModName]()
+## \[font=Verdana\]**xTranslator to DSD**\[/font\]
 
-## \[center\]![FAQ](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/FAQ.png)\[/center\]
+Gets data from xTranslator and formats it as DSD files. This is slightly outdated as its formatting was made for DSD v1.0.x and xTranslator also doesn't provide all the necessary data for DSD v1.1.0, but it still may be useful so I'll leave it here just in case. **Don't expect this one to work without additional manual work!**
 
-### **\[font=Verdana\]Q1: What Skyrim versions are supported?\[/font\]**
+1. Open xTranslator and load up the plugin that has strings you want to replace.
 
-- This mod is not directly dependent on any specific Skyrim version.
-- It does not require any mods that are version dependent.
-- It does require mods that are version dependent, so you'll have to install the correct versions of those mods for your Skyrim version.
-- When everything is installed properly, it should work on any modern version of Skyrim (SE/AE/1.5.x/1.6.x/Steam/GOG/VR), although it hasn't been tested on every version.
-- I do not directly support Oldrim/LE or console, but you're welcome to try to port it yourself (see permissions).
+2. Export the data as XML to `{install_path}\input`.
 
-### **\[font=Verdana\]Q2: What types of plugins are used?\[/font\]**
+3. Repeat steps 1-2 for each plugin that has strings you want to replace. You can then close xTranslator.
 
-- No .esp/.esl/.esm plugins are included in this mod.
-- All plugins included are .esp/.esl/.esm with the ESL flag. This means the plugins count towards the ~4096 ESL limit, not the ~255 ESP limit. If you are on VR, you will need [VR ESL Support](https://www.nexusmods.com/skyrimspecialedition/mods/106712/) to make use of the ESL flag.
-- Plugin header version is 1.70. This means [BEES](https://www.nexusmods.com/skyrimspecialedition/mods/106441) for SE v1.5.97-1.6.659 (never required on v1.6.1130+) or [VR ESL Support](https://www.nexusmods.com/skyrimspecialedition/mods/106712/) for VR are not required to use the plugins in this mod.
-- Plugin header version is 1.71. This means [BEES](https://www.nexusmods.com/skyrimspecialedition/mods/106441) for SE v1.5.97-1.6.659 (never required on v1.6.1130+) or [VR ESL Support](https://www.nexusmods.com/skyrimspecialedition/mods/106712/) for VR are required to use the plugins in this mod.
+4. Open the `DSDifyer` folder in VS Code.
 
-### **\[font=Verdana\]Q3: Does installing/updating/uninstalling on an existing save work?\[/font\]**
+5. Press `Ctrl + Shift + P` to open the Command Pallete. Type to filter for and select `Python: Select Interpreter`. Select one of the options that says something like `Python 3.12.2 64-bit`. This should only need to be done once per workspace.
 
-- As far as I know it should be fine. However, when changing any mods at all mid-playthrough, consider following good modding practices such as making backups, using tools like [ReSaver](https://www.nexusmods.com/skyrimspecialedition/mods/5031), and using bugfix/stability mods like [Save Unbaker](https://www.nexusmods.com/skyrimspecialedition/mods/85565) ([VR](https://www.nexusmods.com/skyrimspecialedition/mods/86265)).
+6. Open `xTranslator-to-DSD.ini` and change any settings if you want.
 
-## \[center\]![Contributing](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Contributing.png)\[/center\]
+7. Press `Ctrl + Shift + B` to open the Build Task Runner. Select `Compile DSD from xTranslator output`.
 
-## \[center\]![Source](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Source.png)\[/center\]
+8. Wait until the Python script finishes running.
 
-## \[center\]![Thanks](https://raw.githubusercontent.com/GroundAura/More-Immersive-Text/main/docs/images/banners/Thanks.png)\[/center\]
+9. Go to `{install_path}\output` to find your DSD files.
 
-- [AuthorName](https://www.nexusmods.com/users/) for stuff.
+## \[font=Verdana\]**Generate Folders**\[/font\]
+
+Gets names of plugins from a MO2 `plugins.txt` file or by searching folders for `.esp`/`.esm`/`.esl` files, then creates folders for DSD from that list of plugin names. Should work for any version of DSD and may even have more general uses.
+
+1. Open the `DSDifyer` folder in VS Code.
+
+2. Press `Ctrl + Shift + P` to open the Command Pallete. Type to filter for and select `Python: Select Interpreter`. Select one of the options that says something like `Python 3.12.2 64-bit`. This should only need to be done once per workspace.
+
+3. Open `Generate-Folders.ini` and change any settings if you want.
+
+4. Press `Ctrl + Shift + B` to open the Build Task Runner. Select `Generate Folders from plugin list`.
+
+5. Wait until the Python script finishes running.
+
+6. Go to `{install_path}\output` to find your DSD folders.
+
+## \[center\]![Recommendations](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Recommendations.png)\[/center\]
+
+Other useful tools for working with Dynamic String Distributor.
+
+- [Dynamic String Distributor - Scheme](https://github.com/SkyHorizon3/SSE-Dynamic-String-Distributor/blob/main/doc/Doc.md)
+
+- [Freeformatter (JSON Escape)](https://www.freeformatter.com/json-escape.html#before-output)
+
+- [Freeformatter (JSON Validator)](https://www.freeformatter.com/json-validator.html)
+
+- [SSE Auto Translator](https://www.nexusmods.com/skyrimspecialedition/mods/111491)
+
+- [Simple but easy configuration tool for Dynamic String Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/114077)
+
+## \[center\]![Contributing & Source](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Contributing%20%26%20Source.png)\[/center\]
+
+This is one of my first projects working with both Python and xEdit scripting. I'm sure it's not written in the best way possible, but it works. If you have any ideas on how to improve or optimize my script feel free to leave a suggestion or a PR. Same goes for feature ideas, although I can't promise I'll know how to implement them or have the time.
+
+The entire tool is licensed under the [The Clear BSD License](https://choosealicense.com/licenses/bsd-3-clause-clear/) so you're free to use it basically however you want.
+
+[Mirror/Source on GitHub](https://github.com/GroundAura/DSDifyer)
+
+## \[center\]![Thanks](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Thanks.png)\[/center\]
+
+- [SkyHorizon](https://www.nexusmods.com/users/124533098) for [Dynamic String Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/107676).
+
+- Jonathan from the xEdit Discord for the initial xEdit script write up and answering my xEdit questions.
+
+- ChatGPT for answering some of my questions.
 
 \[center\][![linktree](https://i.imgur.com/jOQE4n8.png)](https://linktr.ee/groundaura)[\[font=Verdana\]\[color=#ffffff\]**Find me on Linktree**\[/font\]\[/color\]](https://linktr.ee/groundaura)\[/center\]
 \[center\][![discord](https://github.com/doodlum/nexusmods-widgets/blob/main/Discord_40px.png?raw=true)](https://discord.gg/zft8DmbfKv)\[/center\]
 \[center\][![kofi](https://github.com/doodlum/nexusmods-widgets/blob/main/Ko-fi_40px_60fps.png?raw=true)](https://ko-fi.com/groundaura)\[/center\]
 
-## \[center\][\[font=Verdana\]\[color=#ffffff\]\[u\]**> > > Check Out My Other Mods! < < <**\[/u\]\[/font\]\[/color\]](https://www.nexusmods.com/users/97658973?tab=user+files)\[/center\]
+## \[center\][\[font=Verdana\]\[color=#027f00\]\[u\]**> > > Check Out My Other Mods! < < <**\[/u\]\[/font\]\[/color\]](https://www.nexusmods.com/users/97658973?tab=user+files)\[/center\]

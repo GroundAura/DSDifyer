@@ -1,1 +1,1 @@
-More Immersive Text is a mod that does a thing.
+A collection of xEdit and Python scripts to assist with creating Dynamic String Distributor mods.
