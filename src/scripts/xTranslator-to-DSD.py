@@ -71,7 +71,7 @@ def main():
 	ROOT_PATH = os.getcwd()
 	print(f"INFO: Current working directory: '{ROOT_PATH}'.")
 
-	CONFIG_PATH = os.path.join(ROOT_PATH, "xTranslator_to_DSD.ini")
+	CONFIG_PATH = os.path.join(ROOT_PATH, "xTranslator-to-DSD.ini")
 	print(f"INFO: Trying to read config file from: '{CONFIG_PATH}'.")
 	config = read_config(CONFIG_PATH, False)
 	if not config:
