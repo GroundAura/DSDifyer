@@ -1,1 +1,1 @@
-[The Clear BSD License](https://choosealicense.com/licenses/bsd-3-clause-clear/)
+These tools are licensed under [The Clear BSD License](https://choosealicense.com/licenses/bsd-3-clause-clear/).
