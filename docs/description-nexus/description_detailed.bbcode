@@ -22,7 +22,7 @@ Download and extract DSDifyer anywhere on your system. Move [font=Courier New]DS
 [*][url=https://code.visualstudio.com/]VS Code[/url] and its [url=https://marketplace.visualstudio.com/items?itemName=ms-python.python]Python Extension[/url] - To use the build tasks and generally make your life easier.
 [/list]
 
-[size=5][center][img]https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Info.png[/img][/center][/size]
+[size=5][center][img]https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Details.png[/img][/center][/size]
 [size=5][font=Verdana][b]xEdit to DSD[/b][/font][/size]
 
 Gets data from xEdit and formats it as DSD files with folders. This is the most finished option with formatting for DSD v1.1.0.
@@ -30,15 +30,15 @@ Gets data from xEdit and formats it as DSD files with folders. This is the most 
 [list=1]
 [*]Open SSEEdit and load up all the files that have strings you want to replace.
 [*]Select the plugin(s) or record(s) that have strings you want to replace.
-[*]Right click. Select [font=Courier New]Apply Script[/font]. For Script select [font=Courier New]DSDifyer[/font]. Select [font=Courier New]OK[/font].
+[*]Right click. Select '[font=Courier New]Apply Script[/font]'. For Script select '[font=Courier New]DSDifyer[/font]'. Select '[font=Courier New]OK[/font]'.
 [*]Wait until the xEdit script finishes running. If you selected a large amount of records like the base game ESMs this may take a few minutes.
-[*]When it prompts you, save the file to [font=Courier New]{install_path}\input\DSDifyer Output.txt[/font]. If it prompts you to overwrite the file, select [font=Courier New]Yes[/font]. You can now close xEdit.
-[*]Open the [font=Courier New]DSDifyer[/font] folder in VS Code.
-[*]Press [font=Courier New]Ctrl + Shift + P[/font] to open the Command Pallete. Type to filter for and select [font=Courier New]Python: Select Interpreter[/font]. Select one of the options that says something like [font=Courier New]Python 3.12.2 64-bit[/font]. This should only need to be done once per workspace.
-[*]Open [font=Courier New]xEdit-to-DSD.ini[/font] and change any settings if you want.
-[*]Press [font=Courier New]Ctrl + Shift + B[/font] to open the Build Task Runner. Select [font=Courier New]Compile DSD from xEdit output[/font].
+[*]When it prompts you, save the file to '[font=Courier New]{install_path}\input\DSDifyer Output.txt[/font]'. If it prompts you to overwrite the file, select '[font=Courier New]Yes[/font]'. You can now close xEdit.
+[*]Open the '[font=Courier New]DSDifyer[/font]' folder in VS Code.
+[*]Press '[font=Courier New]Ctrl + Shift + P[/font]' to open the Command Pallete. Type to filter for and select '[font=Courier New]Python: Select Interpreter[/font]'. Select one of the options that says something like '[font=Courier New]Python 3.12.2 64-bit[/font]'. This should only need to be done once per workspace.
+[*]Open '[font=Courier New]xEdit-to-DSD.ini[/font]' and change any settings if you want.
+[*]Press '[font=Courier New]Ctrl + Shift + B[/font]' to open the Build Task Runner. Select '[font=Courier New]Compile DSD from xEdit output[/font]'.
 [*]Wait until the Python script finishes running. If you selected a large amount of records this may take several minutes or longer. If it's too long it might not finish and you may have to kill the terminal; I'll look into optimizing this.
-[*]Go to [font=Courier New]{install_path}\output[/font] to find your DSD files and folders.
+[*]Go to '[font=Courier New]{install_path}\output[/font]' to find your DSD files and folders.
 [/list]
 [size=5][font=Verdana][b]xTranslator to DSD[/b][/font][/size]
 
@@ -46,29 +46,29 @@ Gets data from xTranslator and formats it as DSD files. This is slightly outdate
 
 [list=1]
 [*]Open xTranslator and load up the plugin that has strings you want to replace.
-[*]Export the data as XML to [font=Courier New]{install_path}\input[/font].
+[*]Export the data as XML to '[font=Courier New]{install_path}\input[/font]'.
 [*]Repeat steps 1-2 for each plugin that has strings you want to replace. You can then close xTranslator.
-[*]Open the [font=Courier New]DSDifyer[/font] folder in VS Code.
-[*]Press [font=Courier New]Ctrl + Shift + P[/font] to open the Command Pallete. Type to filter for and select [font=Courier New]Python: Select Interpreter[/font]. Select one of the options that says something like [font=Courier New]Python 3.12.2 64-bit[/font]. This should only need to be done once per workspace.
-[*]Open [font=Courier New]xTranslator-to-DSD.ini[/font] and change any settings if you want.
-[*]Press [font=Courier New]Ctrl + Shift + B[/font] to open the Build Task Runner. Select [font=Courier New]Compile DSD from xTranslator output[/font].
+[*]Open the '[font=Courier New]DSDifyer[/font]' folder in VS Code.
+[*]Press '[font=Courier New]Ctrl + Shift + P[/font]' to open the Command Pallete. Type to filter for and select '[font=Courier New]Python: Select Interpreter[/font]'. Select one of the options that says something like '[font=Courier New]Python 3.12.2 64-bit[/font]'. This should only need to be done once per workspace.
+[*]Open '[font=Courier New]xTranslator-to-DSD.ini[/font]' and change any settings if you want.
+[*]Press '[font=Courier New]Ctrl + Shift + B[/font]' to open the Build Task Runner. Select '[font=Courier New]Compile DSD from xTranslator output[/font]'.
 [*]Wait until the Python script finishes running.
-[*]Go to [font=Courier New]{install_path}\output[/font] to find your DSD files.
+[*]Go to '[font=Courier New]{install_path}\output[/font]' to find your DSD files.
 [/list]
 [size=5][font=Verdana][b]Generate Folders[/b][/font][/size]
 
 Gets names of plugins from a MO2 [font=Courier New]plugins.txt[/font] file or by searching folders for [font=Courier New].esp[/font]/[font=Courier New].esm[/font]/[font=Courier New].esl[/font] files, then creates folders for DSD from that list of plugin names. Should work for any version of DSD and may even have more general uses.
 
 [list=1]
-[*]Open the [font=Courier New]DSDifyer[/font] folder in VS Code.
-[*]Press [font=Courier New]Ctrl + Shift + P[/font] to open the Command Pallete. Type to filter for and select [font=Courier New]Python: Select Interpreter[/font]. Select one of the options that says something like [font=Courier New]Python 3.12.2 64-bit[/font]. This should only need to be done once per workspace.
-[*]Open [font=Courier New]Generate-Folders.ini[/font] and change any settings if you want.
-[*]Press [font=Courier New]Ctrl + Shift + B[/font] to open the Build Task Runner. Select [font=Courier New]Generate Folders from plugin list[/font].
+[*]Open the '[font=Courier New]DSDifyer[/font]' folder in VS Code.
+[*]Press '[font=Courier New]Ctrl + Shift + P[/font]' to open the Command Pallete. Type to filter for and select '[font=Courier New]Python: Select Interpreter[/font]'. Select one of the options that says something like '[font=Courier New]Python 3.12.2 64-bit[/font]'. This should only need to be done once per workspace.
+[*]Open '[font=Courier New]Generate-Folders.ini[/font]' and change any settings if you want.
+[*]Press '[font=Courier New]Ctrl + Shift + B[/font]' to open the Build Task Runner. Select '[font=Courier New]Generate Folders from plugin list[/font]'.
 [*]Wait until the Python script finishes running.
-[*]Go to [font=Courier New]{install_path}\output[/font] to find your DSD folders.
+[*]Go to '[font=Courier New]{install_path}\output[/font]' to find your DSD folders.
 [/list]
-
 [size=5][center][img]https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Recommendations.png[/img][/center][/size]
+
 Other useful tools for working with Dynamic String Distributor.
 
 [list]
@@ -93,8 +93,8 @@ The entire tool is licensed under the [url=https://choosealicense.com/licenses/b
 [*]Jonathan from the xEdit Discord for the initial xEdit script write up and answering my xEdit questions.
 [*][url=https://chat.openai.com/]ChatGPT[/url] for answering some of my questions.
 [/list]
-[center][url=https://linktr.ee/groundaura][img]https://i.imgur.com/jOQE4n8.png[/img][/url][url=https://linktr.ee/groundaura][font=Verdana][color=#ffffff][b]Find me on Linktree[/b][/color][/font][/url][/center]
+[center][url=https://linktr.ee/groundaura][img]https://i.imgur.com/jOQE4n8.png[/img][/url][url=https://linktr.ee/groundaura][font=Verdana][color=#ffffff][b]Find me on Linktree[/b][/font][/color][/url][/center]
 [center][url=https://discord.gg/zft8DmbfKv][img]https://github.com/doodlum/nexusmods-widgets/blob/main/Discord_40px.png?raw=true[/img][/url][/center]
 [center][url=https://ko-fi.com/groundaura][img]https://github.com/doodlum/nexusmods-widgets/blob/main/Ko-fi_40px_60fps.png?raw=true[/img][/url][/center]
 
-[size=5][center][url=https://www.nexusmods.com/users/97658973?tab=user+files][font=Verdana][color=#027f00][u][b]> > > Check Out My Other Mods! < < <[/b][/u][/color][/font][/url][/center][/size]
+[size=5][center][url=https://www.nexusmods.com/users/97658973?tab=user+files][font=Verdana][color=#027f00][u][b]> > > Check Out My Other Mods! < < <[/b][/u][/font][/color][/url][/center][/size]

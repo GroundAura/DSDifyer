@@ -22,7 +22,7 @@ Download and extract DSDifyer anywhere on your system. Move `DSDifyer.pas` to yo
 
 - [VS Code](https://code.visualstudio.com/) and its [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) - To use the build tasks and generally make your life easier.
 
-## \[center\]![Info](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Info.png)\[/center\]
+## \[center\]![Details](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Details.png)\[/center\]
 
 ## \[font=Verdana\]**xEdit to DSD**\[/font\]
 
@@ -32,23 +32,23 @@ Gets data from xEdit and formats it as DSD files with folders. This is the most 
 
 2. Select the plugin(s) or record(s) that have strings you want to replace.
 
-3. Right click. Select `Apply Script`. For Script select `DSDifyer`. Select `OK`.
+3. Right click. Select '`Apply Script`'. For Script select '`DSDifyer`'. Select '`OK`'.
 
 4. Wait until the xEdit script finishes running. If you selected a large amount of records like the base game ESMs this may take a few minutes.
 
-5. When it prompts you, save the file to `{install_path}\input\DSDifyer Output.txt`. If it prompts you to overwrite the file, select `Yes`. You can now close xEdit.
+5. When it prompts you, save the file to '`{install_path}\input\DSDifyer Output.txt`'. If it prompts you to overwrite the file, select '`Yes`'. You can now close xEdit.
 
-6. Open the `DSDifyer` folder in VS Code.
+6. Open the '`DSDifyer`' folder in VS Code.
 
-7. Press `Ctrl + Shift + P` to open the Command Pallete. Type to filter for and select `Python: Select Interpreter`. Select one of the options that says something like `Python 3.12.2 64-bit`. This should only need to be done once per workspace.
+7. Press '`Ctrl + Shift + P`' to open the Command Pallete. Type to filter for and select '`Python: Select Interpreter`'. Select one of the options that says something like '`Python 3.12.2 64-bit`'. This should only need to be done once per workspace.
 
-8. Open `xEdit-to-DSD.ini` and change any settings if you want.
+8. Open '`xEdit-to-DSD.ini`' and change any settings if you want.
 
-9. Press `Ctrl + Shift + B` to open the Build Task Runner. Select `Compile DSD from xEdit output`.
+9. Press '`Ctrl + Shift + B`' to open the Build Task Runner. Select '`Compile DSD from xEdit output`'.
 
 10. Wait until the Python script finishes running. If you selected a large amount of records this may take several minutes or longer. If it's too long it might not finish and you may have to kill the terminal; I'll look into optimizing this.
 
-11. Go to `{install_path}\output` to find your DSD files and folders.
+11. Go to '`{install_path}\output`' to find your DSD files and folders.
 
 ## \[font=Verdana\]**xTranslator to DSD**\[/font\]
 
@@ -56,37 +56,37 @@ Gets data from xTranslator and formats it as DSD files. This is slightly outdate
 
 1. Open xTranslator and load up the plugin that has strings you want to replace.
 
-2. Export the data as XML to `{install_path}\input`.
+2. Export the data as XML to '`{install_path}\input`'.
 
 3. Repeat steps 1-2 for each plugin that has strings you want to replace. You can then close xTranslator.
 
-4. Open the `DSDifyer` folder in VS Code.
+4. Open the '`DSDifyer`' folder in VS Code.
 
-5. Press `Ctrl + Shift + P` to open the Command Pallete. Type to filter for and select `Python: Select Interpreter`. Select one of the options that says something like `Python 3.12.2 64-bit`. This should only need to be done once per workspace.
+5. Press '`Ctrl + Shift + P`' to open the Command Pallete. Type to filter for and select '`Python: Select Interpreter`'. Select one of the options that says something like '`Python 3.12.2 64-bit`'. This should only need to be done once per workspace.
 
-6. Open `xTranslator-to-DSD.ini` and change any settings if you want.
+6. Open '`xTranslator-to-DSD.ini`' and change any settings if you want.
 
-7. Press `Ctrl + Shift + B` to open the Build Task Runner. Select `Compile DSD from xTranslator output`.
+7. Press '`Ctrl + Shift + B`' to open the Build Task Runner. Select '`Compile DSD from xTranslator output`'.
 
 8. Wait until the Python script finishes running.
 
-9. Go to `{install_path}\output` to find your DSD files.
+9. Go to '`{install_path}\output`' to find your DSD files.
 
 ## \[font=Verdana\]**Generate Folders**\[/font\]
 
 Gets names of plugins from a MO2 `plugins.txt` file or by searching folders for `.esp`/`.esm`/`.esl` files, then creates folders for DSD from that list of plugin names. Should work for any version of DSD and may even have more general uses.
 
-1. Open the `DSDifyer` folder in VS Code.
+1. Open the '`DSDifyer`' folder in VS Code.
 
-2. Press `Ctrl + Shift + P` to open the Command Pallete. Type to filter for and select `Python: Select Interpreter`. Select one of the options that says something like `Python 3.12.2 64-bit`. This should only need to be done once per workspace.
+2. Press '`Ctrl + Shift + P`' to open the Command Pallete. Type to filter for and select '`Python: Select Interpreter`'. Select one of the options that says something like '`Python 3.12.2 64-bit`'. This should only need to be done once per workspace.
 
-3. Open `Generate-Folders.ini` and change any settings if you want.
+3. Open '`Generate-Folders.ini`' and change any settings if you want.
 
-4. Press `Ctrl + Shift + B` to open the Build Task Runner. Select `Generate Folders from plugin list`.
+4. Press '`Ctrl + Shift + B`' to open the Build Task Runner. Select '`Generate Folders from plugin list`'.
 
 5. Wait until the Python script finishes running.
 
-6. Go to `{install_path}\output` to find your DSD folders.
+6. Go to '`{install_path}\output`' to find your DSD folders.
 
 ## \[center\]![Recommendations](https://raw.githubusercontent.com/GroundAura/Auras-Resources/main/Images/Banners/Skyrim-1/Recommendations.png)\[/center\]
 
