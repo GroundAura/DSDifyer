@@ -73,12 +73,13 @@ def format_formid(formid_dec, plugin):
 
 def data_to_dsd(data, include_identical_strings):
 	combined_content = ""
-	template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-	values_edid = ["GMST DATA"]
+	template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
+	values_edid = []
 	values_edid_index = []
-	values_fid = ["FULL", "DESC", "NPC_ SHRT", "WOOP TNAM", "INFO RNAM", "BOOK CNAM", "MGEF DNAM", "REGN RDMP", "PERK EPFD", "REFR FULL", "DIAL FULL", "INFO RNAM"]
+	values_fid = ["FULL", "DESC", "NPC_ SHRT", "WOOP TNAM", "INFO RNAM", "BOOK CNAM", "MGEF DNAM", "REGN RDMP"]
+	values_fid_edid = ["GMST DATA"]
 	values_fid_orig = ["ACTI RNAM", "FLOR RNAM", "QUST CNAM"]
-	values_fid_index = ["QUST NNAM", "INFO NAM1", "MESG ITXT", "PERK EPF2"]
+	values_fid_index = ["QUST NNAM", "INFO NAM1", "MESG ITXT", "PERK EPF2", "PERK EPFD"]
 	values_orig = []
 	for entry in data:
 		entry_content = ""
@@ -103,8 +104,8 @@ def data_to_dsd(data, include_identical_strings):
 				editor_id = entry['EditorID']
 				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
@@ -114,8 +115,8 @@ def data_to_dsd(data, include_identical_strings):
 				index_number = entry['Index']
 				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("[record_type]", record_type)
 				if not index_number == "-1":
 					entry_content = entry_content.replace("[index_number]", index_number)
@@ -127,8 +128,18 @@ def data_to_dsd(data, include_identical_strings):
 				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
+				entry_content = entry_content.replace("[record_type]", record_type)
+				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
+				entry_content = entry_content.replace("[new_string]", new_string)
+			elif record_type in values_fid_edid:
+				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
+				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
+				entry_content += template + "\n"
+				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
@@ -138,8 +149,8 @@ def data_to_dsd(data, include_identical_strings):
 				index_number = entry['Index']
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[record_type]", record_type)
 				if not index_number == "-1":
 					entry_content = entry_content.replace("[index_number]", index_number)
@@ -151,8 +162,8 @@ def data_to_dsd(data, include_identical_strings):
 				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("[original_string]", original_string)
@@ -168,8 +179,8 @@ def data_to_dsd(data, include_identical_strings):
 				original_string = original_string.replace("\r", "\\" + "r")
 				original_string = original_string.replace("\t", "\\" + "t")
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("[original_string]", original_string)
@@ -178,8 +189,8 @@ def data_to_dsd(data, include_identical_strings):
 				editor_id = entry['EditorID']
 				# template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
+				entry_content = entry_content.replace("[editor_id]", editor_id)
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
@@ -188,8 +199,8 @@ def data_to_dsd(data, include_identical_strings):
 				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
-				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[form_id]", form_id)
+				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
