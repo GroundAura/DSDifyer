@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="369.51596"
-   height="61.50243"
-   viewBox="0 0 97.767763 16.272518"
+   width="248.01993"
+   height="62.573456"
+   viewBox="0 0 65.621938 16.555894"
    version="1.1"
    id="svg1"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
@@ -27,8 +27,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="1.0520974"
-     inkscape:cx="234.76914"
-     inkscape:cy="87.919617"
+     inkscape:cx="80.790999"
+     inkscape:cy="78.414793"
      inkscape:window-width="2560"
      inkscape:window-height="1377"
      inkscape:window-x="1192"
@@ -41,17 +41,20 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-0.19898613,-0.02534573)">
+     transform="translate(-0.13265793,0.06309187)">
     <text
        xml:space="preserve"
        style="font-size:22.1094px;line-height:1.25;font-family:Alef;-inkscape-font-specification:Alef;stroke-width:0.260109"
        x="-0.46429586"
        y="12.229734"
-       id="text1"><tspan
+       id="text1"
+       inkscape:export-filename="Title.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
          id="tspan1"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.1094px;font-family:Sovngarde;-inkscape-font-specification:'Sovngarde Bold';fill:#f9f9f9;stroke-width:0.260109"
          x="-0.46429586"
-         y="12.229734">Project Name</tspan></text>
+         y="12.229734">DSDifyer</tspan></text>
   </g>
 </svg>
