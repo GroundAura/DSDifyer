@@ -136,6 +136,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_edid:
 				form_id = format_formid(entry['FormID'], entry['Master Plugin'])
+				editor_id = entry['EditorID']
 				# template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("[form_id]", form_id)
