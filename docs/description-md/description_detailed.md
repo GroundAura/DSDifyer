@@ -116,7 +116,7 @@ The entire tool is licensed under the [The Clear BSD License](https://choosealic
 
 - Jonathan from the xEdit Discord for the initial xEdit script write up and answering my xEdit questions.
 
-- ChatGPT for answering some of my questions.
+- [ChatGPT](https://chat.openai.com/) for answering some of my questions.
 
 \[center\][![linktree](https://i.imgur.com/jOQE4n8.png)](https://linktr.ee/groundaura)[\[font=Verdana\]\[color=#ffffff\]**Find me on Linktree**\[/font\]\[/color\]](https://linktr.ee/groundaura)\[/center\]
 \[center\][![discord](https://github.com/doodlum/nexusmods-widgets/blob/main/Discord_40px.png?raw=true)](https://discord.gg/zft8DmbfKv)\[/center\]
