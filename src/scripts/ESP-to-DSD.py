@@ -35,7 +35,7 @@ def main():
 		return
 	print("INFO: Config found.")
 	root_var = "[ROOT]"
-	false_vars = ["false", "False", "FALSE", "f", "F", "0"]
+	false_vars = ("false", "False", "FALSE", "f", "F", "0")
 
 	exe_path = config.get('GENERAL', 'EXE_PATH')
 	exe_path = exe_path.replace(root_var, ROOT_PATH)
