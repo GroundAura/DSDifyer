@@ -1,7 +1,8 @@
 import configparser
 import os
-import shutil
-import subprocess
+from shutil import move as shutil_move
+from subprocess import run as cmd
+from subprocess import CalledProcessError as cmd_error
 
 def read_config(file_path, case_sensitive):
 	config = configparser.ConfigParser(comment_prefixes=(";", "#", "//"), inline_comment_prefixes=(";", "#", "//"))
@@ -12,7 +13,7 @@ def read_config(file_path, case_sensitive):
 
 def move_file(source, destination):
 	try:
-		shutil.move(source, destination)
+		shutil_move(source, destination)
 		#print(f"TRACE: File '{source}' moved successfully.")
 	except Exception as e:
 		print(f"ERROR: Error moving file '{source}': {e}")
@@ -74,8 +75,8 @@ def main():
 					if is_bethesda_plugin(source_file_path):
 						command = [exe_path, source_file_path, source_file_path]
 						try:
-							subprocess.run(command, check=True)
-						except subprocess.CalledProcessError as e:
+							cmd(command, check=True)
+						except cmd_error as e:
 							print(f"ERROR: Error running CLI tool: {e}")
 							return
 						json_name = os.path.basename(source_file_path)[:-3] + "json"
@@ -87,8 +88,8 @@ def main():
 			print(f"INFO: SOURCE_PATH ['{source_path}'] is valid. Handling SOURCE_PATH as a Bethesda plugin.")
 			command = [exe_path, source_path, source_path]
 			try:
-				subprocess.run(command, check=True)
-			except subprocess.CalledProcessError as e:
+				cmd(command, check=True)
+			except cmd_error as e:
 				print(f"ERROR: Error running CLI tool: {e}")
 				return
 			json_name = os.path.basename(source_path)[:-3] + "json"
@@ -117,8 +118,8 @@ def main():
 		print(f"INFO: EDITED_PLUGIN_PATH ['{edited_plugin_path}'] is valid.")
 		command = [exe_path, origin_plugin_path, edited_plugin_path]
 		try:
-			subprocess.run(command, check=True)
-		except subprocess.CalledProcessError as e:
+			cmd(command, check=True)
+		except cmd_error as e:
 			print(f"ERROR: Error running CLI tool: {e}")
 			return
 		json_name = os.path.basename(edited_plugin_path)[:-3] + "json"
