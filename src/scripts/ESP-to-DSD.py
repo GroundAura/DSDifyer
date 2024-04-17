@@ -1,5 +1,6 @@
 import configparser
 import os
+import shutil
 import subprocess
 
 def read_config(file_path, case_sensitive):
@@ -9,6 +10,18 @@ def read_config(file_path, case_sensitive):
 	config.read(file_path)
 	return config
 
+def move_file(source, destination):
+	try:
+		shutil.move(source, destination)
+		#print(f"TRACE: File '{source}' moved successfully.")
+	except Exception as e:
+		print(f"ERROR: Error moving file '{source}': {e}")
+
+def is_bethesda_plugin(file_path):
+	plugin_extensions = (".esp", ".esm", ".esl")
+	if not os.path.isfile(file_path) or not file_path.endswith(plugin_extensions):
+		return False
+	return True
 
 def main():
 	ROOT_PATH = os.getcwd()
@@ -23,7 +36,6 @@ def main():
 	print("INFO: Config found.")
 	root_var = "[ROOT]"
 	false_vars = ["false", "False", "FALSE", "f", "F", "0"]
-	plugin_extensions = [".esp", ".esm", ".esl"]
 
 	exe_path = config.get('GENERAL', 'EXE_PATH')
 	exe_path = exe_path.replace(root_var, ROOT_PATH)
@@ -49,43 +61,71 @@ def main():
 	else:
 		dump_mode = True
 
-	if dump_mode and os.path.isfile(source_path):
-		print(f"INFO: SOURCE_PATH ['{source_path}'] is valid. Handling SOURCE_PATH as a .esp/.esm/.esl file.")
+	if dump_mode:
+		print(f"INFO: Running in DUMP_MODE.")
 		source_path = config.get('DUMP_MODE', 'SOURCE_PATH')
 		source_path = source_path.replace(root_var, ROOT_PATH)
 		#print(source_path)
-		if os.path.isfile(source_path):
-			#print(f"TRACE: Handling SOURCE_PATH ['{source_path}'] as a file.")
-			for extension in plugin_extensions:
-				if not source_path.endswith(extension):
-					print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a .esp/.esm/.esl file or a directory containing .esp/.esm/.esl files.")
-					return
-				else:
-					print(f"INFO: SOURCE_PATH ['{source_path}'] is valid. Handling SOURCE_PATH as a .esp/.esm/.esl file.")
-					command = [exe_path, source_path, output_path]
-					try:
-						subprocess.run(command, check=True)
-					except subprocess.CalledProcessError as e:
-						print(f"ERROR: Error running CLI tool: {e}")
-		elif os.path.isdir(source_path):
+		if os.path.isdir(source_path):
 			print(f"INFO: SOURCE_PATH ['{source_path}'] is valid. Handling SOURCE_PATH as a directory.")
+			for root, _, files in os.walk(source_path):
+				for file in files:
+					source_file_path = os.path.join(root, file)
+					if is_bethesda_plugin(source_file_path):
+						command = [exe_path, source_file_path, source_file_path]
+						try:
+							subprocess.run(command, check=True)
+						except subprocess.CalledProcessError as e:
+							print(f"ERROR: Error running CLI tool: {e}")
+							return
+						json_name = os.path.basename(source_file_path)[:-3] + "json"
+						old_path = os.path.join(root, json_name)
+						new_path = os.path.join(output_path, json_name)
+						move_file(old_path, new_path)
+						print(f"INFO: Finished dumping '{source_file_path}' to '{new_path}'.")
+		elif is_bethesda_plugin(source_path):
+			print(f"INFO: SOURCE_PATH ['{source_path}'] is valid. Handling SOURCE_PATH as a Bethesda plugin.")
+			command = [exe_path, source_path, source_path]
+			try:
+				subprocess.run(command, check=True)
+			except subprocess.CalledProcessError as e:
+				print(f"ERROR: Error running CLI tool: {e}")
+				return
+			json_name = os.path.basename(source_path)[:-3] + "json"
+			old_path = os.path.join(os.path.dirname(source_path), json_name)
+			new_path = os.path.join(output_path, json_name)
+			move_file(old_path, new_path)
+			print(f"INFO: Finished dumping '{source_path}' to '{new_path}'.")
 		else:
-			print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a .esp/.esm/.esl file or a directory containing .esp/.esm/.esl files.")
+			print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a Bethesda plugin or a directory containing Bethesda plugins.")
 			return
-	
-		#include_identical_strings = config.get('GENERAL', 'Include_Identical_Strings')
-		#if include_identical_strings in false_vars:
-		#	include_identical_strings = False
-		#else:
-		#	include_identical_strings = True
 	else:
-
-
-
-
-
-
-
+		print(f"INFO: Running in COMPARE_MODE.")
+		origin_plugin_path = config.get('COMPARE_MODE', 'ORIGINAL_PLUGIN_PATH')
+		origin_plugin_path = origin_plugin_path.replace(root_var, ROOT_PATH)
+		#print(origin_plugin_path)
+		if not is_bethesda_plugin(origin_plugin_path):
+			print(f"ERROR: ORIGINAL_PLUGIN_PATH ['{origin_plugin_path}'] must be a Bethesda plugin.")
+			return
+		print(f"INFO: ORIGINAL_PLUGIN_PATH ['{origin_plugin_path}'] is valid.")
+		edited_plugin_path = config.get('COMPARE_MODE', 'EDITED_PLUGIN_PATH')
+		edited_plugin_path = edited_plugin_path.replace(root_var, ROOT_PATH)
+		#print(edited_plugin_path)
+		if not is_bethesda_plugin(edited_plugin_path):
+			print(f"ERROR: EDITED_PLUGIN_PATH ['{edited_plugin_path}'] must be a Bethesda plugin.")
+			return
+		print(f"INFO: EDITED_PLUGIN_PATH ['{edited_plugin_path}'] is valid.")
+		command = [exe_path, origin_plugin_path, edited_plugin_path]
+		try:
+			subprocess.run(command, check=True)
+		except subprocess.CalledProcessError as e:
+			print(f"ERROR: Error running CLI tool: {e}")
+			return
+		json_name = os.path.basename(edited_plugin_path)[:-3] + "json"
+		old_path = os.path.join(os.path.dirname(edited_plugin_path), json_name)
+		new_path = os.path.join(output_path, json_name)
+		move_file(old_path, new_path)
+		print(f"INFO: Finished translating '{origin_plugin_path}' to '{new_path}'.")
 
 if __name__ == "__main__":
 	main()
