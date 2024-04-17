@@ -23,6 +23,7 @@ build/papyrus/
 build/release/
 #dist/**/scripts/*.pex
 dist/DSDifyer/Edit Scripts/DSDifyer.pas
+dist/DSDifyer/ESP-to-DSD.py
 dist/DSDifyer/Generate-Folders.py
 dist/DSDifyer/LICENSE.txt
 dist/DSDifyer/xEdit-to-DSD.py

@@ -2,6 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "ESP-to-DSD.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": ["ESP-to-DSD.py"]
+        },
+        {
             "label": "Generate-Folders.py",
             "type": "shell",
             "command": "${command:python.interpreterPath}",
@@ -24,6 +30,13 @@
             "group": "build",
             "dependsOn": [
                 "Generate-Folders.py"
+            ]
+        },
+        {
+            "label": "Compile DSD from plugin",
+            "group": "build",
+            "dependsOn": [
+                "ESP-to-DSD.py"
             ]
         },
         {
