@@ -1,0 +1,2 @@
+cd "E:\Skyrim\Tools\ESP2DSD"
+"esp2dsd.exe" "C:\Games\Skyrim\Projects\My Projects\DSDifyer\src\strings\ESP\NFF - Cell Name Fixes.esp" "C:\Games\Skyrim\Projects\My Projects\DSDifyer\src\strings\ESP\NFF - Cell Name Fixes.esp"

@@ -26,6 +26,18 @@
             "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
         },
         {
+            "label": "ESP2DSD.bat",
+            "type": "shell",
+            "command": "src\\scripts\\ESP2DSD.bat",
+            "presentation": {"echo": false, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+        },
+        {
+            "label": "ESP-to-DSD.py",
+            "type": "shell",
+            "command": "${command:python.interpreterPath}",
+            "args": ["src\\scripts\\ESP-to-DSD.py"]
+        },
+        {
             "label": "Generate-Folders.py",
             "type": "shell",
             "command": "${command:python.interpreterPath}",
@@ -48,6 +60,13 @@
             "group": "build",
             "dependsOn": [
                 "md2nexus.bat"
+            ]
+        },
+        {
+            "label": "Compile DSD from plugin",
+            "group": "build",
+            "dependsOn": [
+                "ESP-to-DSD.py"
             ]
         },
         {
