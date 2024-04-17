@@ -189,9 +189,11 @@ begin
     slData.Add('FormID: ' + sFormID);
     slData.Add('Record Type: ' + sSignature);
     slData.Add('Data Type: ' + path);
-    //if indx > -1 then begin
-    slData.add('Index: ' + IntToStr(indx));
-    //end;
+    if indx > -1 then begin
+        slData.Add('Index: ' + IntToStr(indx));
+    end else begin
+        slData.Add('Index: ');
+    end;
     s := GetElementEditValues(m, path);
     s := StringReplace(s, #13#10, '\n', [rfReplaceAll]);
     //s := StringReplace(s, #9, '\t', [rfReplaceAll]);
