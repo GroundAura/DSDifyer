@@ -47,7 +47,7 @@ def format_formid(formid_dec, plugin):
 		formid = "0x" + formid + "|" + plugin
 		return formid
 	elif len(formid) == 7:
-		if formid.startswith("1") or formid.startswith("2") or formid.startswith("3") or formid.startswith("4"):
+		if any(formid.startswith(prefix) for prefix in ("1", "2", "3", "4")):
 			formid = "0x0" + formid + "|" + plugin
 		else:
 			formid = formid[1:]
@@ -56,7 +56,7 @@ def format_formid(formid_dec, plugin):
 			formid = "0x" + formid + "|" + plugin
 		return formid
 	elif len(formid) == 8:
-		if formid.startswith("fe"):
+		if any(formid.startswith(prefix) for prefix in ("fe", "FE")):
 			formid = formid[5:]
 			while len(formid) > 1 and formid.startswith("0"):
 				formid = formid[1:]
@@ -74,13 +74,13 @@ def format_formid(formid_dec, plugin):
 def data_to_dsd(data, include_identical_strings):
 	combined_content = ""
 	template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-	values_edid = []
-	values_edid_index = []
-	values_fid = ["FULL", "DESC", "NPC_ SHRT", "WOOP TNAM", "INFO RNAM", "BOOK CNAM", "MGEF DNAM", "REGN RDMP"]
-	values_fid_edid = ["GMST DATA"]
-	values_fid_orig = ["ACTI RNAM", "FLOR RNAM", "QUST CNAM"]
-	values_fid_index = ["QUST NNAM", "INFO NAM1", "MESG ITXT", "PERK EPF2", "PERK EPFD"]
-	values_orig = []
+	values_edid = ()
+	values_edid_index = ()
+	values_fid = ("FULL", "DESC", "NPC_ SHRT", "WOOP TNAM", "INFO RNAM", "BOOK CNAM", "MGEF DNAM", "REGN RDMP")
+	values_fid_edid = ("GMST DATA")
+	values_fid_orig = ("ACTI RNAM", "FLOR RNAM", "QUST CNAM")
+	values_fid_index = ("QUST NNAM", "INFO NAM1", "MESG ITXT", "PERK EPF2", "PERK EPFD")
+	values_orig = ()
 	for entry in data:
 		entry_content = ""
 		new_string = entry['Current Value']
@@ -226,7 +226,7 @@ def main():
 		return
 	print("INFO: Config found.")
 	root_var = "[ROOT]"
-	false_vars = ["false", "False", "FALSE", "f", "F", "0"]
+	false_vars = ("false", "False", "FALSE", "f", "F", "0")
 
 	source_path = config.get('GENERAL', 'SOURCE_PATH')
 	source_path = source_path.replace(root_var, ROOT_PATH)
@@ -289,7 +289,7 @@ def main():
 						f.write(output)
 						#print(f"TRACE: Translated entry from '{input_file}' into '{output_file}'.")
 				except Exception as e:
-					print(f"ERROR: error reading '{output_file}': {e}")
+					print(f"ERROR: Error reading '{output_file}': {e}")
 			else:
 				#print(f"ERROR: File '{output_file}' can't be found.")
 				print(f"INFO: File '{output_file}' can't be found, creating file.")
