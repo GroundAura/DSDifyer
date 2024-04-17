@@ -17,9 +17,9 @@ var
     s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature: string;
     m, subRecord1, subRecord1M, subRecord2, subRecord2M, subRecord3, subRecord3M, subRecord4, subRecord4M: IInterface;
 begin
-    // skip item if the selection is the master
     m := Master(e);
     if not Assigned(m) then m := e;
+    // skip item if the selection is the master
     //if not Assigned(m) then Exit;
 
     s := '';
@@ -152,6 +152,14 @@ begin
         end;
         // "NNAM - Description"
         //AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'NNAM');
+    end else
+    if sSignature = 'REFR' then begin
+        // "Map Marker" \ "FULL - Name"
+        if ElementExists (e, 'Map Marker') then begin
+            subRecord1 := ElementByName(e, 'Map Marker');
+            subRecord1M := ElementByName(m, 'Map Marker');
+            AddDataByPath(ix, subRecord1, subRecord1M, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'FULL');
+        end;
     end else
     if sSignature = 'REGN' then begin
         // "Region Data Entries (sorted)" \ i "Region Data Entry" \ "RDMP - Map Name"
