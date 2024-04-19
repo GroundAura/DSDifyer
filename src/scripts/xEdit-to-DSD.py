@@ -232,7 +232,7 @@ def main():
 	source_path = source_path.replace(root_var, ROOT_PATH)
 	#print(source_path)
 	if os.path.isfile(source_path):
-		print(f"INFO: Handling SOURCE_PATH ['{source_path}'] as a file.")
+		print(f"INFO: SOURCE_PATH ['{source_path}'] is valid.")
 	else:
 		print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a file.")
 		return
@@ -241,7 +241,7 @@ def main():
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	#print(output_path)
 	if os.path.isdir(output_path):
-		print(f"INFO: Handling OUTPUT_PATH ['{output_path}'] as a directory.")
+		print(f"INFO: OUTPUT_PATH ['{output_path}'] is valid.")
 	else:
 		print(f"ERROR: OUTPUT_PATH ['{output_path}'] must be a directory.")
 		return
