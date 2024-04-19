@@ -42,9 +42,14 @@ begin
 
     // add additional elements here
     // "FULL - Name"
-    AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'FULL');
+    if ElementExists (e, 'FULL') then begin
+        AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'FULL');
+    end;
     // "DESC - Description"
-    AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'DESC');
+    if ElementExists (e, 'DESC') then begin
+        AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'DESC');
+    end;
+
     if sSignature = 'ACTI' then begin
         // "RNAM - Activate Text Override"
         AddDataByPath(ix, e, m, s, sCurrentPlugin, sMasterPlugin, sEditorID, sFormID, sSignature, 'RNAM');
