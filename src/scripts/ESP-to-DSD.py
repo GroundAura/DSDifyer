@@ -62,6 +62,15 @@ def main():
 	else:
 		dump_mode = True
 
+	# change directory to DSD2EXE folder to allow dsd2exe.exe to run properly
+	exe_dir_path = os.path.dirname(exe_path)
+	os.chdir(exe_dir_path)
+	#command = ["cd \"" + exe_dir_path + "\""]
+	#try:
+	#	cmd(command, check=True)
+	#except cmd_error as e:
+	#	print(f"ERROR: Error running CL command ['{command}']: {e}")
+
 	if dump_mode:
 		print(f"INFO: Running in DUMP_MODE.")
 		source_path = config.get('DUMP_MODE', 'SOURCE_PATH')
@@ -79,11 +88,17 @@ def main():
 						except cmd_error as e:
 							print(f"ERROR: Error running CLI tool: {e}")
 							return
+						# move resulting DSD .json file
 						json_name = os.path.basename(source_file_path)[:-3] + "json"
 						old_path = os.path.join(root, json_name)
 						new_path = os.path.join(output_path, json_name)
 						move_file(old_path, new_path)
 						print(f"INFO: Finished dumping '{source_file_path}' to '{new_path}'.")
+						# delete empty diff .json file
+						plugin_extension = os.path.basename(source_file_path)[-3:]
+						diff_path = os.path.join(root, os.path.basename(source_file_path)[:-4] + "_output." + plugin_extension + ".json")
+						os.remove(diff_path)
+						print(f"INFO: Removed empty diff file ['{diff_path}'].")
 		elif is_bethesda_plugin(source_path):
 			print(f"INFO: SOURCE_PATH ['{source_path}'] is valid. Handling SOURCE_PATH as a Bethesda plugin.")
 			command = [exe_path, source_path, source_path]
@@ -92,11 +107,17 @@ def main():
 			except cmd_error as e:
 				print(f"ERROR: Error running CLI tool: {e}")
 				return
+			# move resulting DSD .json file
 			json_name = os.path.basename(source_path)[:-3] + "json"
 			old_path = os.path.join(os.path.dirname(source_path), json_name)
 			new_path = os.path.join(output_path, json_name)
 			move_file(old_path, new_path)
 			print(f"INFO: Finished dumping '{source_path}' to '{new_path}'.")
+			# delete empty diff .json file
+			plugin_extension = os.path.basename(source_file_path)[-3:]
+			diff_path = os.path.join(root, os.path.basename(source_file_path)[:-4] + "_output." + plugin_extension + ".json")
+			os.remove(diff_path)
+			print(f"INFO: Removed empty diff file ['{diff_path}'].")
 		else:
 			print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a Bethesda plugin or a directory containing Bethesda plugins.")
 			return
@@ -122,6 +143,7 @@ def main():
 		except cmd_error as e:
 			print(f"ERROR: Error running CLI tool: {e}")
 			return
+		# move resulting DSD .json file
 		json_name = os.path.basename(edited_plugin_path)[:-3] + "json"
 		old_path = os.path.join(os.path.dirname(edited_plugin_path), json_name)
 		new_path = os.path.join(output_path, json_name)
