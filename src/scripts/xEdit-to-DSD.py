@@ -9,77 +9,6 @@ def read_config(file_path, case_sensitive):
 	config.read(file_path)
 	return config
 
-def create_text_file(file_path, content):
-	try:
-		with open(file_path, "w", encoding="utf-8") as f:
-			f.write(content)
-		print(f"INFO: File '{file_path}' created successfully.")
-	except Exception as e:
-		print(f"ERROR: Error creating file '{file_path}': {e}")
-
-def parse_data(file_path):
-	parsed_data = []
-	current_data = {}
-	key_mapping = {
-		"Current Plugin": "CurrentPlugin",
-		"Master Plugin": "MasterPlugin",
-		"EditorID": "editor_id",
-		"FormID": "form_id",
-		"Record Type": "RecordType",
-		"Data Type": "DataType",
-		"Index": "index_number",
-		"Master Value": "original",
-		"Current Value": "string"
-	}
-	with open(file_path, "r", encoding="utf-8-sig") as f:
-		for line in f:
-			#line = line.strip()
-			line = line.replace("\n", "")
-			if line.startswith("[STRING]"):
-				if current_data:
-					#if current_data["original"] != current_data["string"]:
-					#	current_data["status"] = "TranslationComplete"
-					#else:
-					#	current_data["status"] = "TranslationRequired"
-					#current_data = {"status": "TranslationComplete" if current_data["original"] != current_data["string"] else "TranslationRequired"}
-					#current_data["status"] = "TranslationComplete"
-					#current_data["status"] = "TranslationRequired"
-					#current_data["status"] = "null"
-					parsed_data.append(current_data)
-					current_data = {}
-				continue
-			key_value_pair = line.split(": ", 1)
-			#print(f"TRACE: 'key_value_pair': '{key_value_pair}'.")
-			if len(key_value_pair) == 2:
-				key, value = key_value_pair
-				key = key_mapping.get(key, key)
-				value = "null" if value in ("", "-1") else value
-				#print(f"TRACE: ('key', 'value'): '{key, value}'.")
-				current_data[key] = value
-		if current_data:
-			#if current_data["original"] != current_data["string"]:
-			#	current_data["status"] = "TranslationComplete"
-			#else:
-			#	current_data["status"] = "TranslationRequired"
-			#current_data = {"status": "TranslationComplete" if current_data["original"] != current_data["string"] else "TranslationRequired"}
-			#current_data["status"] = "TranslationComplete"
-			#current_data["status"] = "TranslationRequired"
-			#current_data["status"] = "null"
-			parsed_data.append(current_data)
-	#print(f"TRACE: Parsed data: '{parsed_data}'.")
-	return parsed_data
-
-def json_formatting(data):
-	data = data.replace("\\\\", "\\\\\\\\")
-	data = data.replace("\"", "\\\"")
-	data = data.replace("\b", "\\b")
-	data = data.replace("\f", "\\f")
-	data = data.replace("\n", "\\n")
-	data = data.replace("\r", "\\r")
-	data = data.replace("\t", "\\t")
-	#data = data.replace("’", "'")
-	return data
-
 def format_formid(formid_dec, plugin):
 	formid_dec = int(formid_dec)
 	#print(f"TRACE: FormID (dec): "{formid_dec}".")
@@ -115,6 +44,74 @@ def format_formid(formid_dec, plugin):
 		print(f"ERROR: FormID '{formid}' longer than expected.")
 		return
 
+def parse_data(file_path):
+	parsed_data = []
+	current_data = {}
+	key_mapping = {
+		"Current Plugin": "origin_plugin",
+		"Master Plugin": "master_plugin",
+		"EditorID": "editor_id",
+		"FormID": "form_id",
+		"Record Type": "RecordType",
+		"Data Type": "DataType",
+		"Index": "index",
+		"Master Value": "original",
+		"Current Value": "string"
+	}
+	with open(file_path, "r", encoding="utf-8-sig") as f:
+		for line in f:
+			#line = line.strip()
+			line = line.replace("\n", "")
+			if line.startswith("[STRING]"):
+				if current_data:
+					#if current_data["original"] != current_data["string"]:
+					#	current_data["status"] = "TranslationComplete"
+					#else:
+					#	current_data["status"] = "TranslationRequired"
+					#current_data = {"status": "TranslationComplete" if current_data["original"] != current_data["string"] else "TranslationRequired"}
+					#current_data["status"] = "TranslationComplete"
+					#current_data["status"] = "TranslationRequired"
+					#current_data["status"] = "null"
+					parsed_data.append(current_data)
+					current_data = {}
+				continue
+			key_value_pair = line.split(": ", 1)
+			#print(f"TRACE: 'key_value_pair': '{key_value_pair}'.")
+			if len(key_value_pair) == 2:
+				key, value = key_value_pair
+				key = key_mapping.get(key, key)
+				value = "null" if value in ("", "-1") else value
+				if key == "form_id":
+					value = format_formid(value, current_data.get("master_plugin"))
+				if key == "DataType":
+					key = "type"
+					value = current_data.pop("RecordType") + " " + value
+				#print(f"TRACE: ('key', 'value'): '{key, value}'.")
+				current_data[key] = value
+		if current_data:
+			#if current_data["original"] != current_data["string"]:
+			#	current_data["status"] = "TranslationComplete"
+			#else:
+			#	current_data["status"] = "TranslationRequired"
+			#current_data = {"status": "TranslationComplete" if current_data["original"] != current_data["string"] else "TranslationRequired"}
+			#current_data["status"] = "TranslationComplete"
+			#current_data["status"] = "TranslationRequired"
+			#current_data["status"] = "null"
+			parsed_data.append(current_data)
+	#print(f"TRACE: Parsed data: '{parsed_data}'.")
+	return parsed_data
+
+def json_formatting(data):
+	data = data.replace("\\\\", "\\\\\\\\")
+	data = data.replace("\"", "\\\"")
+	data = data.replace("\b", "\\b")
+	data = data.replace("\f", "\\f")
+	data = data.replace("\n", "\\n")
+	data = data.replace("\r", "\\r")
+	data = data.replace("\t", "\\t")
+	#data = data.replace("’", "'")
+	return data
+
 #def dict_to_json(dict_list):
 #	#key_mapping = {"Current Plugin": "Current Plugin", "Master Plugin": "Master Plugin", "EditorID": "editor_id", "FormID": "form_id", "Record Type": "record_type_pt1", "Data Type": "record_type_pt2", "Index": "index_number", "Master Value": "original", "Current Value": "string"}
 #	dict_list = dict_list
@@ -127,6 +124,14 @@ def format_formid(formid_dec, plugin):
 #			dict['record_type'] = record_type
 #	print(f"TRACE: Formatted data: {dict_list}")
 #	return dict_list
+
+def create_text_file(file_path, content):
+	try:
+		with open(file_path, "w", encoding="utf-8") as f:
+			f.write(content)
+		print(f"INFO: File '{file_path}' created successfully.")
+	except Exception as e:
+		print(f"ERROR: Error creating file '{file_path}': {e}")
 
 def data_to_dsd(data, include_identical_strings):
 	combined_content = ""
@@ -143,7 +148,7 @@ def data_to_dsd(data, include_identical_strings):
 		new_string = entry["string"]
 		original_string = entry["original"]
 		if not original_string == new_string or include_identical_strings == True:
-			record_type = entry["RecordType"] + " " + entry["DataType"]
+			record_type = entry["type"]
 			#record_type = record_type.replace("DATA\\Bool", "DATA")
 			#record_type = record_type.replace("DATA\\Float", "DATA")
 			#record_type = record_type.replace("DATA\\Int", "DATA")
@@ -162,7 +167,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_edid_index:
 				editor_id = entry["editor_id"]
-				index_number = entry["index_number"]
+				index_number = entry["index"]
 				#template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
@@ -175,7 +180,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid:
-				form_id = format_formid(entry["form_id"], entry["MasterPlugin"])
+				form_id = entry["form_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("[form_id]", form_id)
@@ -185,7 +190,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_edid:
-				form_id = format_formid(entry["form_id"], entry["MasterPlugin"])
+				form_id = entry["form_id"]
 				editor_id = entry["editor_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
@@ -196,8 +201,8 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_index:
-				form_id = format_formid(entry["form_id"], entry["MasterPlugin"])
-				index_number = entry["index_number"]
+				form_id = entry["form_id"]
+				index_number = entry["index"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("[form_id]", form_id)
@@ -210,7 +215,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif record_type in values_fid_orig:
-				form_id = format_formid(entry["form_id"], entry["MasterPlugin"])
+				form_id = entry["form_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("[form_id]", form_id)
@@ -247,7 +252,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			elif entry["DataType"] in values_fid:
-				form_id = format_formid(entry["form_id"], entry["MasterPlugin"])
+				form_id = entry["form_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
 				entry_content = entry_content.replace("[form_id]", form_id)
@@ -309,8 +314,8 @@ def main():
 		json_entry = data_to_dsd([entry], include_identical_strings)
 		output = ""
 		if not json_entry == "":
-			new_plugin = entry["CurrentPlugin"]
-			original_plugin = entry["MasterPlugin"]
+			new_plugin = entry["origin_plugin"]
+			original_plugin = entry["master_plugin"]
 			output_folder = os.path.join(output_path, "SKSE\\Plugins\\DynamicStringDistributor", original_plugin)
 			if not os.path.exists(output_folder):
 				print(f"INFO: Directory '{output_folder}' can't be found, creating directory.")
