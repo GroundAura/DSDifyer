@@ -1,5 +1,6 @@
 import configparser
 import os
+#from pathlib import Path
 
 def read_config(file_path, case_sensitive):
 	config = configparser.ConfigParser(comment_prefixes=(";", "#", "//"), inline_comment_prefixes=(";", "#", "//"))
@@ -255,7 +256,6 @@ def main():
 	else:
 		include_identical_strings = True
 
-	plugin_extensions = (".esp", ".esm", ".esl")
 	starting_content = ""
 	#starting_content = "[\n"
 	input_file = source_path
@@ -270,9 +270,9 @@ def main():
 			if not os.path.exists(output_folder):
 				print(f"INFO: Directory '{output_folder}' can't be found, creating directory.")
 				os.makedirs(output_folder)
-			output_file_name = new_plugin
-			for extension in plugin_extensions:
-				output_file_name = output_file_name.replace(extension, ".json")
+				#folder_path = Path(os.path.join(output_path, "SKSE\\Plugins\\DynamicStringDistributor", original_plugin))
+				#folder_path.mkdir(parents=True, exist_ok=True)
+			output_file_name = new_plugin[:-3] + "json"
 			output_file = os.path.join(output_folder, output_file_name)
 			#print(f"TRACE: Trying to read file from '{output_file}'.")
 			if os.path.isfile(output_file):
@@ -298,6 +298,7 @@ def main():
 				#print(f"ERROR: File '{output_file}' can't be found.")
 				print(f"INFO: File '{output_file}' can't be found, creating file.")
 				create_text_file(output_file, starting_content)
+
 	for root, _, files in os.walk(output_path):
 		for file_name in files:
 			output_file = os.path.join(root, file_name)
