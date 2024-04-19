@@ -31,7 +31,7 @@ def parse_data(file_path):
 		"Master Value": "original",
 		"Current Value": "string"
 	}
-	with open(file_path, "r", encoding="utf-8") as file:
+	with open(file_path, "r", encoding="utf-8-sig") as file:
 		for line in file:
 			#line = line.strip()
 			line = line.replace("\n", "")
