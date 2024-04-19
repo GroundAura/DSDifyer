@@ -36,6 +36,17 @@ def parse_data(file_path):
 			parsed_data.append(current_data)
 	return parsed_data
 
+def json_formatting(data):
+	data = data.replace("\\\\", "\\\\\\\\")
+	data = data.replace("\"", "\\\"")
+	data = data.replace("\b", "\\b")
+	data = data.replace("\f", "\\f")
+	data = data.replace("\n", "\\n")
+	data = data.replace("\r", "\\r")
+	data = data.replace("\t", "\\t")
+	#data = data.replace("’", "'")
+	return data
+
 def format_formid(formid_dec, plugin):
 	formid_dec = int(formid_dec)
 	#print(f"TRACE: FormID (dec): "{formid_dec}".")
@@ -92,14 +103,6 @@ def data_to_dsd(data, include_identical_strings):
 			#record_type = record_type.replace("DATA\\Int", "DATA")
 			record_type = record_type.replace("DATA\\Name", "DATA")
 			record_type = record_type.replace("EPFD\\Text", "EPFD")
-			new_string = new_string.replace("\\\\", "\\\\\\\\")
-			new_string = new_string.replace("\"", "\\" + "\"")
-			new_string = new_string.replace("\b", "\\" + "b")
-			new_string = new_string.replace("\f", "\\" + "f")
-			new_string = new_string.replace("\n", "\\" + "n")
-			new_string = new_string.replace("\r", "\\" + "r")
-			new_string = new_string.replace("\t", "\\" + "t")
-			#new_string = new_string.replace("’", "'")
 			if record_type in values_edid:
 				editor_id = entry["EditorID"]
 				#template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
@@ -285,6 +288,7 @@ def main():
 						output = "[\n"
 					output += json_entry
 					#print(output)
+					output = json_formatting(output)
 					with open(output_file, "w", encoding="utf-8") as f:
 						f.write(output)
 						#print(f"TRACE: Translated entry from '{input_file}' into '{output_file}'.")
