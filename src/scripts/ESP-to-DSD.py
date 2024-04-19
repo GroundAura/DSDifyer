@@ -38,7 +38,7 @@ def main():
 	root_var = "[ROOT]"
 	false_vars = ("false", "False", "FALSE", "f", "F", "0")
 
-	exe_path = config.get('GENERAL', 'EXE_PATH')
+	exe_path = config.get("GENERAL", "EXE_PATH")
 	exe_path = exe_path.replace(root_var, ROOT_PATH)
 	#print(exe_path)
 	if not exe_path.endswith("esp2dsd.exe"):
@@ -47,7 +47,7 @@ def main():
 	else:
 		print(f"INFO: EXE_PATH ['{exe_path}'] is valid.")
 
-	output_path = config.get('GENERAL', 'OUTPUT_PATH')
+	output_path = config.get("GENERAL", "OUTPUT_PATH")
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	#print(output_path)
 	if os.path.isdir(output_path):
@@ -56,7 +56,7 @@ def main():
 		print(f"ERROR: OUTPUT_PATH ['{output_path}'] must be a directory.")
 		return
 
-	dump_mode = config.get('GENERAL', 'DUMP_MODE')
+	dump_mode = config.get("GENERAL", "DUMP_MODE")
 	if dump_mode in false_vars:
 		dump_mode = False
 	else:
@@ -73,7 +73,7 @@ def main():
 
 	if dump_mode:
 		print(f"INFO: Running in DUMP_MODE.")
-		source_path = config.get('DUMP_MODE', 'SOURCE_PATH')
+		source_path = config.get("DUMP_MODE", "SOURCE_PATH")
 		source_path = source_path.replace(root_var, ROOT_PATH)
 		#print(source_path)
 		if os.path.isdir(source_path):
@@ -123,14 +123,14 @@ def main():
 			return
 	else:
 		print(f"INFO: Running in COMPARE_MODE.")
-		origin_plugin_path = config.get('COMPARE_MODE', 'ORIGINAL_PLUGIN_PATH')
+		origin_plugin_path = config.get("COMPARE_MODE", "ORIGINAL_PLUGIN_PATH")
 		origin_plugin_path = origin_plugin_path.replace(root_var, ROOT_PATH)
 		#print(origin_plugin_path)
 		if not is_bethesda_plugin(origin_plugin_path):
 			print(f"ERROR: ORIGINAL_PLUGIN_PATH ['{origin_plugin_path}'] must be a Bethesda plugin.")
 			return
 		print(f"INFO: ORIGINAL_PLUGIN_PATH ['{origin_plugin_path}'] is valid.")
-		edited_plugin_path = config.get('COMPARE_MODE', 'EDITED_PLUGIN_PATH')
+		edited_plugin_path = config.get("COMPARE_MODE", "EDITED_PLUGIN_PATH")
 		edited_plugin_path = edited_plugin_path.replace(root_var, ROOT_PATH)
 		#print(edited_plugin_path)
 		if not is_bethesda_plugin(edited_plugin_path):

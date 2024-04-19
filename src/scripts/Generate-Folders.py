@@ -11,7 +11,7 @@ def read_config(file_path, case_sensitive):
 
 def generate_folders_from_plugins(source_path, is_file, output_path):
 	if is_file:
-		with open(source_path, 'r', encoding='utf-8') as f:
+		with open(source_path, "r", encoding="utf-8") as f:
 			contents = f.read()
 			for line in contents.splitlines():
 				if line.startswith("*"):
@@ -42,7 +42,7 @@ def main():
 	root_var = "[ROOT]"
 	filename_var = "plugins.txt"
 
-	source_path = config.get('CREATE_FOLDERS', 'SOURCE_PATH')
+	source_path = config.get("CREATE_FOLDERS", "SOURCE_PATH")
 	source_path = source_path.replace(root_var, ROOT_PATH)
 	#print(source_path)
 	if os.path.isdir(source_path):
@@ -55,7 +55,7 @@ def main():
 		print(f"ERROR: SOURCE_PATH ['{source_path}'] must be a directory or a file named {filename_var}.")
 		return
 
-	output_path = config.get('CREATE_FOLDERS', 'OUTPUT_PATH')
+	output_path = config.get("CREATE_FOLDERS", "OUTPUT_PATH")
 	output_path = output_path.replace(root_var, ROOT_PATH)
 	#print(output_path)
 	if os.path.isdir(output_path):
