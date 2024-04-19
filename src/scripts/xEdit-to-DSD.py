@@ -155,7 +155,7 @@ def data_to_dsd(data, include_identical_strings):
 			record_type = record_type.replace("DATA\\Name", "DATA")
 			record_type = record_type.replace("EPFD\\Text", "EPFD")
 			new_string = json_formatting(new_string)
-			if record_type in values_edid:
+			if record_type.endswith(values_edid):
 				editor_id = entry["editor_id"]
 				#template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
@@ -165,7 +165,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_edid_index:
+			elif record_type.endswith(values_edid_index):
 				editor_id = entry["editor_id"]
 				index_number = entry["index"]
 				#template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
@@ -179,7 +179,7 @@ def data_to_dsd(data, include_identical_strings):
 					entry_content = entry_content.replace("[index_number]", index_number)
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_fid:
+			elif record_type.endswith(values_fid):
 				form_id = entry["form_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
@@ -189,7 +189,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_fid_edid:
+			elif record_type.endswith(values_fid_edid):
 				form_id = entry["form_id"]
 				editor_id = entry["editor_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
@@ -200,7 +200,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_fid_index:
+			elif record_type.endswith(values_fid_index):
 				form_id = entry["form_id"]
 				index_number = entry["index"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"index\": \"[index_number]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
@@ -214,7 +214,7 @@ def data_to_dsd(data, include_identical_strings):
 					entry_content = entry_content.replace("[index_number]", index_number)
 				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_fid_orig:
+			elif record_type.endswith(values_fid_orig):
 				form_id = entry["form_id"]
 				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
 				entry_content += template + "\n"
@@ -224,7 +224,7 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("[original_string]", original_string)
 				entry_content = entry_content.replace("[new_string]", new_string)
-			elif record_type in values_orig:
+			elif record_type.endswith(values_orig):
 				#template = "\t{\n\t\t\"type\": \"[record_type]\",\n\t\t\"original\": \"[original_string]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
 				entry_content += template + "\n"
 				original_string = original_string.replace("\\\\", "\\\\\\\\")
@@ -240,26 +240,6 @@ def data_to_dsd(data, include_identical_strings):
 				entry_content = entry_content.replace("[record_type]", record_type)
 				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
 				entry_content = entry_content.replace("[original_string]", original_string)
-				entry_content = entry_content.replace("[new_string]", new_string)
-			elif entry["DataType"] in values_edid:
-				editor_id = entry["editor_id"]
-				#template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
-				entry_content += template + "\n"
-				entry_content = entry_content.replace("\n\t\t\"form_id\": \"[form_id]\",", "")
-				entry_content = entry_content.replace("[editor_id]", editor_id)
-				entry_content = entry_content.replace("[record_type]", record_type)
-				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
-				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
-				entry_content = entry_content.replace("[new_string]", new_string)
-			elif entry["DataType"] in values_fid:
-				form_id = entry["form_id"]
-				#template = "\t{\n\t\t\"form_id\": \"[form_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\",\n\t},"
-				entry_content += template + "\n"
-				entry_content = entry_content.replace("[form_id]", form_id)
-				entry_content = entry_content.replace("\n\t\t\"editor_id\": \"[editor_id]\",", "")
-				entry_content = entry_content.replace("[record_type]", record_type)
-				entry_content = entry_content.replace("\n\t\t\"index\": \"[index_number]\",", "")
-				entry_content = entry_content.replace("\n\t\t\"original\": \"[original_string]\",", "")
 				entry_content = entry_content.replace("[new_string]", new_string)
 			else:
 				print(f"ERROR: Record type '{record_type}' is not supported by this script.")
