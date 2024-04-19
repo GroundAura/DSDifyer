@@ -37,6 +37,14 @@ def parse_data(file_path):
 			line = line.replace("\n", "")
 			if line.startswith("[STRING]"):
 				if current_data:
+					#if current_data["original"] != current_data["string"]:
+					#	current_data["status"] = "TranslationComplete"
+					#else:
+					#	current_data["status"] = "TranslationRequired"
+					#current_data = {"status": "TranslationComplete" if current_data["original"] != current_data["string"] else "TranslationRequired"}
+					#current_data["status"] = "TranslationComplete"
+					#current_data["status"] = "TranslationRequired"
+					#current_data["status"] = "null"
 					parsed_data.append(current_data)
 					current_data = {}
 				continue
@@ -49,6 +57,14 @@ def parse_data(file_path):
 				#print(f"TRACE: ('key', 'value'): '{key, value}'.")
 				current_data[key] = value
 		if current_data:
+			#if current_data["original"] != current_data["string"]:
+			#	current_data["status"] = "TranslationComplete"
+			#else:
+			#	current_data["status"] = "TranslationRequired"
+			#current_data = {"status": "TranslationComplete" if current_data["original"] != current_data["string"] else "TranslationRequired"}
+			#current_data["status"] = "TranslationComplete"
+			#current_data["status"] = "TranslationRequired"
+			#current_data["status"] = "null"
 			parsed_data.append(current_data)
 	#print(f"TRACE: Parsed data: '{parsed_data}'.")
 	return parsed_data
