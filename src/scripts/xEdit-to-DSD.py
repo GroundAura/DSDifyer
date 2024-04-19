@@ -11,8 +11,8 @@ def read_config(file_path, case_sensitive):
 
 def create_text_file(file_path, content):
 	try:
-		with open(file_path, "w", encoding="utf-8") as file:
-			file.write(content)
+		with open(file_path, "w", encoding="utf-8") as f:
+			f.write(content)
 		print(f"INFO: File '{file_path}' created successfully.")
 	except Exception as e:
 		print(f"ERROR: Error creating file '{file_path}': {e}")
@@ -31,8 +31,8 @@ def parse_data(file_path):
 		"Master Value": "original",
 		"Current Value": "string"
 	}
-	with open(file_path, "r", encoding="utf-8-sig") as file:
-		for line in file:
+	with open(file_path, "r", encoding="utf-8-sig") as f:
+		for line in f:
 			#line = line.strip()
 			line = line.replace("\n", "")
 			if line.startswith("[STRING]"):
