@@ -104,6 +104,7 @@ def data_to_dsd(data, include_identical_strings):
 			#record_type = record_type.replace("DATA\\Int", "DATA")
 			record_type = record_type.replace("DATA\\Name", "DATA")
 			record_type = record_type.replace("EPFD\\Text", "EPFD")
+			new_string = json_formatting(new_string)
 			if record_type in values_edid:
 				editor_id = entry["EditorID"]
 				#template = "\t{\n\t\t\"editor_id\": \"[editor_id]\",\n\t\t\"type\": \"[record_type]\",\n\t\t\"string\": \"[new_string]\"\n\t},"
@@ -288,7 +289,6 @@ def main():
 						output = "[\n"
 					output += json_entry
 					#print(output)
-					output = json_formatting(output)
 					with open(output_file, "w", encoding="utf-8") as f:
 						f.write(output)
 						#print(f"TRACE: Translated entry from '{input_file}' into '{output_file}'.")
