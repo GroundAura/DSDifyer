@@ -11,7 +11,7 @@ def read_config(file_path, case_sensitive):
 
 def generate_folders_from_plugins(source_path, is_file, output_path):
 	if is_file:
-		with open(source_path, 'r') as f:
+		with open(source_path, 'r', encoding='utf-8') as f:
 			contents = f.read()
 			for line in contents.splitlines():
 				if line.startswith("*"):

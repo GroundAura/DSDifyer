@@ -10,7 +10,7 @@ def read_config(file_path, case_sensitive):
 
 def create_text_file(file_path, content):
 	try:
-		with open(file_path, 'w') as file:
+		with open(file_path, 'w', encoding='utf-8') as file:
 			file.write(content)
 		print(f"INFO: File '{file_path}' created successfully.")
 	except Exception as e:
@@ -19,7 +19,7 @@ def create_text_file(file_path, content):
 def parse_data(file_path):
 	parsed_data = []
 	current_data = {}
-	with open(file_path, 'r') as file:
+	with open(file_path, 'r', encoding='utf-8') as file:
 		for line in file:
 			#line = line.strip()
 			line = line.replace("\n", "")
@@ -274,7 +274,7 @@ def main():
 			#print(f"TRACE: Trying to read file from '{output_file}'.")
 			if os.path.isfile(output_file):
 				try:
-					with open(output_file, 'r') as f:
+					with open(output_file, 'r', encoding='utf-8') as f:
 						output = f.read()
 					if output.endswith("]"):
 						print(f"INFO: File '{output_file}' already exists, overwriting file.")
@@ -285,7 +285,7 @@ def main():
 						output = "[\n"
 					output += json_entry
 					#print(output)
-					with open(output_file, 'w') as f:
+					with open(output_file, 'w', encoding='utf-8') as f:
 						f.write(output)
 						#print(f"TRACE: Translated entry from '{input_file}' into '{output_file}'.")
 				except Exception as e:
@@ -300,13 +300,13 @@ def main():
 			#print(f"INFO: Trying to read file from '{output_file}'.")
 			if os.path.isfile(output_file):
 				try:
-					with open(output_file, 'r') as f:
+					with open(output_file, 'r', encoding='utf-8') as f:
 						output = f.read()
 					if not output.endswith("]"):
 						output += "]"
 					output = output.replace("\t},\n]", "\t}\n]")
 					#output = output.replace("\t", "  ")
-					with open(output_file, 'w') as f:
+					with open(output_file, 'w', encoding='utf-8') as f:
 						f.write(output)
 						print(f"INFO: Finished formatting file: '{output_file}'.")
 				except Exception as e:

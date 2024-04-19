@@ -120,7 +120,7 @@ def main():
 				output_file_name = file.replace(".xml", ".json")
 				#print(output_file_name)
 				output_file = os.path.join(output_path, output_file_name)
-				with open(output_file, 'w') as f:
+				with open(output_file, 'w', encoding='utf-8') as f:
 					f.write(output)
 					print(f"INFO: Generated file '{output_file}' from '{xml_file}'.")
 				#print(output)
