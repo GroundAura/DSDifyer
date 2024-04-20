@@ -85,6 +85,11 @@ def parse_data(file_path):
 					value = format_formid(value, current_data.get("master_plugin"))
 				if key == "DataType":
 					key = "type"
+					#value = value.replace("DATA\\Bool", "DATA")
+					#value = value.replace("DATA\\Float", "DATA")
+					#value = value.replace("DATA\\Int", "DATA")
+					value = value.replace("DATA\\Name", "DATA")
+					value = value.replace("EPFD\\Text", "EPFD")
 					value = current_data.pop("RecordType") + " " + value
 				#print(f"TRACE: ('key', 'value'): '{key, value}'.")
 				current_data[key] = value
@@ -149,11 +154,6 @@ def data_to_dsd(data, include_identical_strings):
 		original_string = entry["original"]
 		if not original_string == new_string or include_identical_strings == True:
 			record_type = entry["type"]
-			#record_type = record_type.replace("DATA\\Bool", "DATA")
-			#record_type = record_type.replace("DATA\\Float", "DATA")
-			#record_type = record_type.replace("DATA\\Int", "DATA")
-			record_type = record_type.replace("DATA\\Name", "DATA")
-			record_type = record_type.replace("EPFD\\Text", "EPFD")
 			new_string = json_formatting(new_string)
 			if record_type.endswith(values_edid):
 				editor_id = entry["editor_id"]
