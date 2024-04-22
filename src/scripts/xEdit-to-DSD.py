@@ -1,6 +1,5 @@
 import configparser
 import os
-#from pathlib import Path
 
 def read_config(file_path, case_sensitive):
 	config = configparser.ConfigParser(comment_prefixes=(";", "#", "//"), inline_comment_prefixes=(";", "#", "//"))
@@ -218,6 +217,9 @@ def data_to_dsd(data, required_elements_only, include_identical_strings):
 	return combined_content
 
 def main():
+	VERSION = "1.2.0"
+	print(f"'DSDifyer (xEdit to DSD) v{VERSION}'\nStarted.")
+
 	ROOT_PATH = os.getcwd()
 	print(f"INFO: Current working directory: '{ROOT_PATH}'.")
 
@@ -261,21 +263,22 @@ def main():
 	else:
 		required_elements_only = True
 
+	edited_files = 0
 	parsed_data = parse_data(source_path)
 	if not parsed_data == []:
 		all_files_and_contents = []
-		for root, _, files in os.walk(os.path.join(output_path, "SKSE\\Plugins\\DynamicStringDistributor")):
-			for file_name in files:
-				file_path = os.path.join(root, file_name)
-				#print(f"INFO: Trying to read file from '{file_path}'.")
-				if file_path.endswith(".json"):
-					try:
-						with open(file_path, "r", encoding="utf-8") as f:
-							file_content = f.read()
-						file_and_content = {"file_path": file_path, "file_content": file_content, "modified": False}
-						all_files_and_contents.append(file_and_content)
-					except Exception as e:
-						print(f"ERROR: Error reading '{file_path}': {e}")
+		#for root, _, files in os.walk(os.path.join(output_path, "SKSE\\Plugins\\DynamicStringDistributor")):
+		#	for file_name in files:
+		#		file_path = os.path.join(root, file_name)
+		#		#print(f"INFO: Trying to read file from '{file_path}'.")
+		#		if file_path.endswith(".json"):
+		#			try:
+		#				with open(file_path, "r", encoding="utf-8") as f:
+		#					file_content = f.read()
+		#				file_and_content = {"file_path": file_path, "file_content": file_content, "modified": False}
+		#				all_files_and_contents.append(file_and_content)
+		#			except Exception as e:
+		#				print(f"ERROR: Error reading '{file_path}': {e}")
 		for entry in parsed_data:
 			json_entry = data_to_dsd([entry], required_elements_only, include_identical_strings)
 			if not json_entry == "":
@@ -283,13 +286,18 @@ def main():
 				original_plugin = entry["master_plugin"]
 				path_to_match = os.path.join(original_plugin, new_plugin[:-3] + "json")
 				for file_and_content in all_files_and_contents:
+					#if file_and_content["file_path"].endswith(path_to_match) and json_entry not in file_and_content["file_content"]:
 					if file_and_content["file_path"].endswith(path_to_match):
-						file_and_content["file_content"] = file_and_content["file_content"].rstrip("\n]") + ",\n" + json_entry + "\n]"
+						file_content = file_and_content["file_content"].rstrip("\n]") + ",\n" + json_entry + "\n]"
+						file_and_content["file_content"] = file_content
+						file_and_content["modified"] = True
+						#print(f"TRACE: Adding to existing path: '{path_to_match}'.")
 						break
 				else:
 					file_path = os.path.join(output_path, "SKSE\\Plugins\\DynamicStringDistributor", path_to_match)
 					file_content = "[\n" + json_entry + "\n]"
 					file_and_content = {"file_path": file_path, "file_content": file_content, "modified": True}
+					#print(f"TRACE: Adding to new path: '{path_to_match}'.")
 					all_files_and_contents.append(file_and_content)
 		for file_and_content in all_files_and_contents:
 			if file_and_content["modified"]:
@@ -297,9 +305,12 @@ def main():
 				try:
 					with open(output_file, "w", encoding="utf-8") as f:
 						f.write(file_and_content["file_content"])
-						print(f"INFO: Added to file: '{output_file}'.")
+					edited_files += 1
+					print(f"INFO: Added to file: '{output_file}'.")
 				except Exception as e:
 					print(f"ERROR: Error writing to '{output_file}': {e}")
+
+	print(f"Finished.\nResults: Files written to: {edited_files}.")
 
 if __name__ == "__main__":
 	main()
